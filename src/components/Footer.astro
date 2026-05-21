@@ -1,0 +1,58 @@
+---
+import siteData from '../content/site.json';
+---
+
+<footer class="bg-brand-dark text-gray-300">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <!-- Brand -->
+      <div>
+        <img src="/images/logos/zeppelin-logo.png" alt={siteData.companyName} class="h-20 w-auto mb-4" />
+        <p class="text-sm">{siteData.description}</p>
+      </div>
+
+      <!-- Useful Links -->
+      <div>
+        <h3 class="text-brand-orange font-bold text-lg mb-4 border-b-2 border-brand-orange pb-2">Useful Links</h3>
+        <ul class="space-y-2 text-sm">
+          <li><a href="/" class="hover:text-white transition-colors">Home</a></li>
+          <li><a href="/compare/" class="hover:text-white transition-colors">Compare Models</a></li>
+          <li><a href="/video-audio/" class="hover:text-white transition-colors">Video &amp; Audio</a></li>
+          <li><a href="/dealers/" class="hover:text-white transition-colors">Dealers</a></li>
+          <li><a href="/blog/" class="hover:text-white transition-colors">Blog</a></li>
+        </ul>
+      </div>
+
+      <!-- Help -->
+      <div>
+        <h3 class="text-brand-orange font-bold text-lg mb-4 border-b-2 border-brand-orange pb-2">Help</h3>
+        <ul class="space-y-2 text-sm">
+          <li><a href="/about/" class="hover:text-white transition-colors">About Us</a></li>
+          <li><a href="/applications/" class="hover:text-white transition-colors">Applications</a></li>
+          <li><a href="/dealers/" class="hover:text-white transition-colors">Find a Dealer</a></li>
+          <li><a href="/contact/" class="hover:text-white transition-colors">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div>
+        <h3 class="text-brand-orange font-bold text-lg mb-4 border-b-2 border-brand-orange pb-2">Contact Us</h3>
+        <div class="space-y-3 text-sm">
+          <div>
+            <p class="font-bold text-white">Lab Location</p>
+            <p>{siteData.address}</p>
+          </div>
+          <div>
+            <a href={`mailto:${siteData.contactEmail}`} class="hover:text-brand-orange transition-colors">
+              {siteData.contactEmail}
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-500">
+      <p>&copy; {siteData.copyright}. All Rights Reserved.</p>
+    </div>
+  </div>
+</footer>

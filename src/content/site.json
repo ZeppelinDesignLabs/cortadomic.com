@@ -1,0 +1,39 @@
+{
+  "siteName": "Cortado Mic",
+  "companyName": "Zeppelin Design Labs",
+  "siteUrl": "https://www.cortadomic.com",
+  "defaultOgImage": "/images/og/og-home.jpg",
+  "tagline": "Contact Microphones by Zeppelin Design Labs",
+  "description": "The Cortado family of contact microphones reveals the hidden sounds in the solid world around you.",
+  "contactEmail": "info@zeppelindesignlabs.com",
+  "twitterHandle": "@zeppelindesignlabs",
+  "sameAs": [
+    "https://www.zeppelindesignlabs.com",
+    "https://www.youtube.com/@zeppelindesignlabs",
+    "https://www.instagram.com/zeppelindesignlabs",
+    "https://www.facebook.com/zeppelindesignlabs"
+  ],
+  "analytics": {
+    "ga4MeasurementId": ""
+  },
+  "contactForm": {
+    "provider": "Web3Forms",
+    "providerUrl": "https://web3forms.com",
+    "endpoint": "https://api.web3forms.com/submit",
+    "deliversTo": "info@zeppelindesignlabs.com",
+    "envVar": "PUBLIC_WEB3FORMS_ACCESS_KEY",
+    "githubSecret": "WEB3FORMS_ACCESS_KEY"
+  },
+  "address": "31w154 91st St, Unit #113, Naperville, IL 60564 USA",
+  "copyright": "2026 Zeppelin Design Labs",
+  "chatwayWidgetId": "kRCxJ6qGDA01",
+  "nav": [
+    { "label": "Home", "href": "/" },
+    { "label": "Products", "href": "#", "children": [] },
+    { "label": "Compare", "href": "/compare/" },
+    { "label": "Video & Audio", "href": "/video-audio/" },
+    { "label": "Dealers", "href": "/dealers/" },
+    { "label": "Applications", "href": "/applications/" },
+    { "label": "Contact", "href": "/contact/" }
+  ]
+}

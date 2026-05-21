@@ -1,0 +1,72 @@
+{
+  "slug": "cortado-xe",
+  "name": "Cortado Xe",
+  "shortName": "Xe",
+  "tagline": "All-in-one. Phantom-powered. 26mm across.",
+  "badge": "NEW · Released May 2026",
+  "price": "$169.95",
+  "accessoryPrice": "",
+  "accessoryName": "",
+  "metaDescription": "Cortado Xe — the most compact pro contact microphone we've ever built. Balanced piezo sensor and phantom-powered preamp integrated into a single 26mm × 11mm all-steel housing. 40 Hz – 40 kHz, balanced XLR output, magnet-mountable.",
+  "availability": "InStock",
+  "sku": "PCXE",
+  "description": "The Cortado Xe is the most compact pro contact microphone we've ever built — a balanced piezo sensor and a phantom-powered JFET preamp integrated into a single all-steel housing 26mm across and 11mm tall, with a permanently attached XLR cable. Plug into any 48V phantom input and you're ready to record or perform. No battery. No DI box. No outboard preamp.",
+  "targetUse": "Acoustic instrument players, luthiers, live sound, sound design, anyone who needs a durable pro contact mic in a compact package",
+  "features": [
+    "All-in-one design — sensor and preamp integrated in a single 26mm × 11mm all-steel housing with permanently attached XLR cable",
+    "All-steel ferrous housing — durable, well-shielded, magnet-mountable for instant repositioning",
+    "Extended frequency response — 40 Hz to 40 kHz captures full harmonic detail well past the limits of human hearing",
+    "Balanced XLR output — pro-grade signal, low noise, drives long cable runs without degradation",
+    "Phantom powered (48V) — no batteries, no DI box, no external preamp needed",
+    "Versatile mounting — ships with mounting putty; ferrous housing also accepts tape or any common magnet for fast repositioning",
+    "Lower profile than competing AKG C411 PP and roughly 39% less expensive at MAP"
+  ],
+  "specs": {
+    "Output": "Balanced XLR",
+    "Frequency Response": "40 Hz – 40 kHz (typical)",
+    "Power": "24V – 48V Phantom Power",
+    "Form Factor": "26mm ⌀ × 11mm — sensor, preamp, and XLR cable in one housing",
+    "Transducer": "Piezo contact sensor with built-in JFET preamp (fixed bias)",
+    "Housing": "All-steel, ferrous (magnet-mountable)",
+    "Cable Length": "6 ft (1.8m)",
+    "Mounting": "Mounting putty (included), magnet, or tape",
+    "Warranty": "1-year limited"
+  },
+  "inTheBox": [
+    "Cortado Xe microphone",
+    "Carry pouch",
+    "Mounting putty",
+    "Velcro cable tie",
+    "Guitar pick",
+    "Sticker"
+  ],
+  "heroImage": "/images/products/xe-2.png",
+  "heroImageAlt": "Cortado Xe compact contact microphone — all-in-one steel sensor with XLR cable",
+  "ogImage": "/images/og/og-xe.jpg",
+  "galleryImages": [
+    "/images/products/xe-2.png",
+    "/images/products/xe-on-guitar.jpg",
+    "/images/products/xe-3.jpg",
+    "/images/products/xe-box.jpg",
+    "/images/products/xe-pouch.jpg",
+    "/images/products/xe-sensor-closeup.jpg"
+  ],
+  "galleryAlts": [
+    "Cortado Xe contact microphone product hero shot",
+    "Cortado Xe mounted on acoustic guitar near the bridge",
+    "Cortado Xe on instrument with mounting putty",
+    "Cortado Xe retail packaging box",
+    "Cortado Xe carry pouch included in the box",
+    "Close-up of Cortado Xe piezo sensor in steel housing"
+  ],
+  "videos": [],
+  "playlists": [],
+  "documents": [
+    {
+      "title": "Spec Sheet",
+      "description": "Product brochure with specifications and overview",
+      "url": "/docs/cortado-xe-spec-sheet.pdf"
+    }
+  ],
+  "order": 2
+}

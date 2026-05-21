@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+---
+
+<BaseLayout
+  title="Blog"
+  description="Articles about contact microphones, Cortado Xe and MkIII comparisons, mounting tips, foley techniques, and field recording."
+>
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <h1 class="text-4xl font-bold text-brand-dark mb-4">Blog</h1>
+    <p class="text-gray-600 text-lg mb-12 max-w-2xl">
+      Guides and ideas for getting more from contact microphones — from studio and stage to foley and field recording.
+    </p>
+
+    <div class="grid md:grid-cols-2 gap-8">
+      {posts.map((post) => (
+        <article class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+          {post.data.heroImage && (
+            <img
+              src={post.data.heroImage}
+              alt={post.data.title}
+              class="w-full h-48 object-cover"
+              loading="lazy"
+            />
+          )}
+          <div class="p-6">
+            <time datetime={post.data.pubDate.toISOString()} class="text-sm text-gray-500">
+              {post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+            </time>
+            <h2 class="text-xl font-bold text-brand-dark mt-2 mb-3">
+              <a href={`/blog/${post.id}/`} class="hover:text-brand-orange transition-colors">
+                {post.data.title}
+              </a>
+            </h2>
+            <p class="text-gray-600 text-sm leading-relaxed mb-4">{post.data.description}</p>
+            <a href={`/blog/${post.id}/`} class="text-brand-orange font-bold text-sm hover:underline">
+              Read article &rarr;
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

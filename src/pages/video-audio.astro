@@ -1,0 +1,219 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import siteData from '../content/site.json';
+import { buildVideoListJsonLd } from '../lib/seo';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const productsDir = path.join(process.cwd(), 'src/content/products');
+const productFiles = fs.readdirSync(productsDir).filter((f: string) => f.endsWith('.json'));
+const products = productFiles
+  .map((f: string) => JSON.parse(fs.readFileSync(path.join(productsDir, f), 'utf-8')))
+  .sort((a: any, b: any) => a.order - b.order);
+
+const allVideos = products.flatMap((p: any) =>
+  p.videos.map((v: any) => ({ ...v, productSlug: p.slug }))
+);
+const allPlaylists = products.flatMap((p: any) =>
+  (p.playlists || []).map((pl: any) => ({ ...pl, productSlug: p.slug }))
+);
+
+function youtubeEmbedUrl(embedId: string, startAt?: number) {
+  const params = new URLSearchParams({ rel: '0' });
+  if (startAt) params.set('start', String(startAt));
+  return `https://www.youtube.com/embed/${embedId}?${params.toString()}`;
+}
+
+const productsWithoutMedia = products.filter(
+  (p: any) => p.videos.length === 0 && (!p.playlists || p.playlists.length === 0)
+);
+
+function soundcloudEmbedUrl(playlistId: string) {
+  const params = new URLSearchParams({
+    visual: 'false',
+    url: `https://api.soundcloud.com/playlists/${playlistId}`,
+    show_artwork: 'true',
+    maxheight: '1000',
+    maxwidth: '1200',
+    auto_play: 'false',
+    buying: 'true',
+    liking: 'true',
+    download: 'true',
+    sharing: 'true',
+    show_comments: 'true',
+    show_playcount: 'true',
+    show_user: 'true',
+  });
+  return `https://w.soundcloud.com/player/?${params.toString()}`;
+}
+
+const pageUrl = `${siteData.siteUrl}/video-audio/`;
+const videoLd = buildVideoListJsonLd(allVideos, pageUrl);
+---
+
+<BaseLayout
+  title="Video and Audio"
+  description="Watch demo videos and listen to audio samples of Cortado contact microphones — acoustic instruments, foley sound design, field recording, and live venue applications."
+  preconnectYoutube={allVideos.some((v: any) => v.embedId)}
+  jsonLd={videoLd}
+>
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <h1 class="text-4xl font-bold text-brand-dark mb-4">Video &amp; Audio</h1>
+    <p class="text-gray-600 text-lg mb-8">Watch demonstrations and listen to audio samples from our Cortado microphone family.</p>
+
+    <!-- Model filter -->
+    <div class="flex flex-wrap gap-2 mb-10" id="video-filters">
+      <button class="filter-btn active px-5 py-2 rounded-full font-bold text-sm transition-colors" data-model="all">
+        All Models
+      </button>
+      {products.map((p: any) => (
+        <button class="filter-btn px-5 py-2 rounded-full font-bold text-sm transition-colors" data-model={p.slug}>
+          {p.shortName}
+        </button>
+      ))}
+    </div>
+
+    {allVideos.length > 0 && (
+      <div class="mb-16 media-section" id="videos-section">
+        <h2 class="text-3xl font-bold text-brand-dark mb-8">Our Videos</h2>
+        <div class="grid md:grid-cols-2 gap-8">
+          {allVideos.map((v: any) => (
+            <div class="media-item" data-product={v.productSlug}>
+              <h3 class="text-xl font-bold text-brand-dark mb-3">{v.title}</h3>
+              {v.embedId ? (
+                <div class="aspect-video bg-gray-100 rounded-lg overflow-hidden shadow">
+                  <iframe
+                    src={youtubeEmbedUrl(v.embedId, v.startAt)}
+                    title={v.title}
+                    class="w-full h-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                    loading="lazy"
+                  />
+                </div>
+              ) : (
+                <div class="aspect-video bg-gray-100 rounded-lg flex items-center justify-center text-gray-400">
+                  Video coming soon
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+
+    {allPlaylists.length > 0 && (
+      <div class="mb-16 media-section" id="audio-section">
+        <h2 class="text-3xl font-bold text-brand-dark mb-8">Audio Samples</h2>
+        <div class="grid md:grid-cols-2 gap-8">
+          {allPlaylists.map((pl: any) => (
+            <div class="media-item" data-product={pl.productSlug}>
+              <h3 class="text-xl font-bold text-brand-dark mb-3">{pl.title}</h3>
+              {pl.embedId ? (
+                pl.provider === 'soundcloud' ? (
+                  <div class="bg-gray-100 rounded-lg overflow-hidden shadow">
+                    <iframe
+                      src={soundcloudEmbedUrl(pl.embedId)}
+                      title={pl.title}
+                      class="w-full"
+                      height="450"
+                      allow="autoplay"
+                      loading="lazy"
+                    />
+                  </div>
+                ) : (
+                  <div class="aspect-video bg-gray-100 rounded-lg overflow-hidden shadow">
+                    <iframe
+                      src={`https://www.youtube.com/embed/videoseries?list=${pl.embedId}&rel=0`}
+                      title={pl.title}
+                      class="w-full h-full"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowfullscreen
+                      loading="lazy"
+                    />
+                  </div>
+                )
+              ) : (
+                <div class="h-[450px] bg-gray-100 rounded-lg flex items-center justify-center text-gray-400">
+                  Playlist coming soon
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+
+    {allVideos.length === 0 && allPlaylists.length === 0 && (
+      <div class="text-center py-16 text-gray-400">
+        <p class="text-xl">Video and audio content coming soon.</p>
+      </div>
+    )}
+
+    {productsWithoutMedia.map((p: any) => (
+      <div class="coming-soon-panel hidden" data-product={p.slug}>
+        <div class="bg-brand-light rounded-xl px-8 py-16 text-center max-w-2xl mx-auto">
+          <p class="text-brand-orange font-bold text-sm uppercase tracking-widest mb-3">Coming Soon</p>
+          <h2 class="text-3xl font-bold text-brand-dark mb-4">{p.name}</h2>
+          <p class="text-gray-600 text-lg mb-8">
+            Video and audio samples for the {p.name} are in production. Check back soon — or explore the product in the meantime.
+          </p>
+          <a
+            href={`/products/${p.slug}/`}
+            class="inline-block bg-brand-orange text-white px-8 py-3 rounded-full font-bold hover:bg-brand-orange-light transition-colors"
+          >
+            Learn About the {p.shortName}
+          </a>
+        </div>
+      </div>
+    ))}
+  </section>
+</BaseLayout>
+
+<style>
+  @reference "../styles/global.css";
+
+  .filter-btn {
+    @apply bg-gray-200 text-gray-600;
+  }
+  .filter-btn.active {
+    @apply bg-brand-orange text-white;
+  }
+  .filter-btn:not(.active):hover {
+    @apply bg-gray-300;
+  }
+</style>
+
+<script is:inline>
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const mediaItems = document.querySelectorAll('.media-item');
+  const mediaSections = document.querySelectorAll('.media-section');
+  const comingSoonPanels = document.querySelectorAll('.coming-soon-panel');
+
+  function applyFilter(model) {
+    mediaItems.forEach(item => {
+      if (model === 'all') {
+        item.classList.remove('hidden');
+      } else {
+        item.classList.toggle('hidden', item.dataset.product !== model);
+      }
+    });
+
+    mediaSections.forEach(section => {
+      const visible = section.querySelectorAll('.media-item:not(.hidden)').length;
+      section.classList.toggle('hidden', visible === 0);
+    });
+
+    comingSoonPanels.forEach(panel => {
+      panel.classList.toggle('hidden', model !== panel.dataset.product);
+    });
+  }
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      applyFilter(btn.dataset.model);
+    });
+  });
+</script>

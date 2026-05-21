@@ -1,0 +1,197 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const productsDir = path.join(process.cwd(), 'src/content/products');
+const productFiles = fs.readdirSync(productsDir).filter((f: string) => f.endsWith('.json'));
+const products = productFiles
+  .map((f: string) => JSON.parse(fs.readFileSync(path.join(productsDir, f), 'utf-8')))
+  .sort((a: any, b: any) => a.order - b.order);
+
+const specKeys = Object.keys(products[0]?.specs || {});
+---
+
+<BaseLayout title="Compare Models" description="Compare Cortado Xe vs MkIII contact microphones side by side — specs, features, pricing, and use-case guidance to find the right model for your application.">
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <h1 class="text-4xl font-bold text-brand-dark mb-4">Compare Cortado Models</h1>
+    <p class="text-gray-600 text-lg mb-10">Full specifications side by side. Click a model name to jump to its detailed section.</p>
+
+    <!-- Tab navigation -->
+    <div class="flex flex-wrap gap-2 mb-8" id="spec-tabs">
+      <a href="/compare/" class="spec-tab active px-5 py-2 rounded-full font-bold text-sm transition-colors" data-target="all">
+        All Models
+      </a>
+      {products.map((p: any) => (
+        <a href={`#${p.slug}`} class="spec-tab px-5 py-2 rounded-full font-bold text-sm transition-colors" data-target={p.slug}>
+          {p.shortName}
+        </a>
+      ))}
+    </div>
+
+    <!-- Side-by-side comparison table -->
+    <div class="overflow-x-auto mb-16" id="comparison-all">
+      <table class="w-full bg-white rounded-xl shadow-lg overflow-hidden">
+        <thead>
+          <tr class="bg-brand-dark text-white">
+            <th class="px-6 py-4 text-left font-bold min-w-48">Specification</th>
+            {products.map((p: any) => (
+              <th class="px-6 py-4 text-center font-bold min-w-40">
+                <a href={`#${p.slug}`} class="hover:text-brand-orange transition-colors">{p.name}</a>
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+          <tr>
+            <td class="px-6 py-4 font-medium text-gray-700">Price</td>
+            {products.map((p: any) => (
+              <td class="px-6 py-4 text-center font-bold text-brand-dark">
+                {p.price === "TBD" ? "Coming Soon" : `MSRP ${p.price}`}
+              </td>
+            ))}
+          </tr>
+          <tr class="bg-gray-50">
+            <td class="px-6 py-4 font-medium text-gray-700">Target Use</td>
+            {products.map((p: any) => (
+              <td class="px-6 py-4 text-center text-sm text-gray-600">{p.targetUse}</td>
+            ))}
+          </tr>
+          {specKeys.map((key, i) => (
+            <tr class={i % 2 === 0 ? '' : 'bg-gray-50'}>
+              <td class="px-6 py-4 font-medium text-gray-700">{key}</td>
+              {products.map((p: any) => (
+                <td class="px-6 py-4 text-center text-sm text-gray-600">{p.specs[key] || '—'}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Which Cortado Is Right for You? -->
+    <div class="mb-16 bg-brand-light rounded-2xl p-8 lg:p-12">
+      <h2 class="text-3xl font-bold text-brand-dark mb-6 text-center">Which Cortado Is Right for You?</h2>
+      <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div class="bg-white rounded-xl p-6 shadow-md border-t-4 border-brand-orange">
+          <h3 class="text-xl font-bold text-brand-dark mb-3">Get the Cortado Xe if&hellip;</h3>
+          <ul class="space-y-2 text-gray-700">
+            <li class="flex items-start gap-2"><span class="text-brand-orange font-bold mt-0.5">&#10003;</span> You want the smallest, simplest pro contact mic</li>
+            <li class="flex items-start gap-2"><span class="text-brand-orange font-bold mt-0.5">&#10003;</span> You play acoustic instruments (guitar, banjo, violin, ukulele)</li>
+            <li class="flex items-start gap-2"><span class="text-brand-orange font-bold mt-0.5">&#10003;</span> You need something compact that fits on small instruments</li>
+            <li class="flex items-start gap-2"><span class="text-brand-orange font-bold mt-0.5">&#10003;</span> You prefer all-in-one simplicity: sensor &rarr; cable &rarr; XLR</li>
+            <li class="flex items-start gap-2"><span class="text-brand-orange font-bold mt-0.5">&#10003;</span> You want magnet-mountable repositionable attachment</li>
+          </ul>
+          <p class="text-sm text-gray-500 mt-4 italic">Compact all-in-one form factor, 26mm sensor, all-steel ferrous housing, extended HF to ~40 kHz</p>
+        </div>
+        <div class="bg-white rounded-xl p-6 shadow-md border-t-4 border-brand-dark">
+          <h3 class="text-xl font-bold text-brand-dark mb-3">Get the Cortado MkIII if&hellip;</h3>
+          <ul class="space-y-2 text-gray-700">
+            <li class="flex items-start gap-2"><span class="text-brand-dark font-bold mt-0.5">&#10003;</span> You need onboard controls (pad + high-pass filter)</li>
+            <li class="flex items-start gap-2"><span class="text-brand-dark font-bold mt-0.5">&#10003;</span> You work in sound design, field recording, or live sound</li>
+            <li class="flex items-start gap-2"><span class="text-brand-dark font-bold mt-0.5">&#10003;</span> You need a more rugged sensor for demanding environments</li>
+            <li class="flex items-start gap-2"><span class="text-brand-dark font-bold mt-0.5">&#10003;</span> You record percussion, piano soundboards, or architectural surfaces</li>
+            <li class="flex items-start gap-2"><span class="text-brand-dark font-bold mt-0.5">&#10003;</span> You want a separate sensor from the electronics chassis</li>
+          </ul>
+          <p class="text-sm text-gray-500 mt-4 italic">Full-featured with pad + HPF controls, 36mm sensor separate from chassis</p>
+        </div>
+      </div>
+      <p class="text-center text-gray-500 mt-6 text-sm">Both models handle the same core tasks. The Xe is the compact, streamlined option; the MkIII offers onboard controls and a sensor that tolerates harsher environments.</p>
+    </div>
+
+    <!-- Per-model detail sections -->
+    {products.map((p: any) => (
+      <div id={p.slug} class="spec-section mb-16 scroll-mt-24">
+        <div class="flex items-center gap-4 mb-6">
+          <h2 class="text-3xl font-bold text-brand-dark">{p.name}</h2>
+          <a href={`/products/${p.slug}/`} class="text-brand-orange font-bold hover:underline text-sm">
+            View full product page &rarr;
+          </a>
+        </div>
+        <p class="text-gray-600 mb-6">{p.description}</p>
+
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-6">
+          <table class="w-full">
+            <tbody class="divide-y divide-gray-100">
+              <tr>
+                <td class="px-6 py-3 font-medium text-gray-700 w-48">Price</td>
+                <td class="px-6 py-3 font-bold">{p.price === "TBD" ? "Coming Soon" : `MSRP ${p.price}`}</td>
+              </tr>
+              {Object.entries(p.specs).map(([key, value]: [string, any], i: number) => (
+                <tr class={i % 2 === 0 ? 'bg-gray-50' : ''}>
+                  <td class="px-6 py-3 font-medium text-gray-700 w-48">{key}</td>
+                  <td class="px-6 py-3 text-gray-600">{value}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {p.documents.length > 0 && (
+          <div>
+            <h3 class="font-bold text-lg mb-3">Downloads</h3>
+            <div class="flex flex-wrap gap-3">
+              {p.documents.map((doc: any) => (
+                <a href={doc.url} class="inline-flex items-center gap-2 px-4 py-2 bg-brand-light rounded-lg hover:bg-gray-200 transition-colors" target="_blank" rel="noopener">
+                  <svg class="w-5 h-5 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3" />
+                  </svg>
+                  {doc.title}
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    ))}
+  </section>
+</BaseLayout>
+
+<style>
+  @reference "../styles/global.css";
+
+  .spec-tab {
+    @apply bg-gray-200 text-gray-600 no-underline inline-block;
+  }
+  .spec-tab.active {
+    @apply bg-brand-orange text-white;
+  }
+  .spec-tab:not(.active):hover {
+    @apply bg-gray-300;
+  }
+</style>
+
+<script is:inline>
+  const tabs = document.querySelectorAll('.spec-tab');
+  const allSection = document.getElementById('comparison-all');
+  const sections = document.querySelectorAll('.spec-section');
+
+  function applyTab(target) {
+    tabs.forEach(t => t.classList.toggle('active', t.dataset.target === target));
+
+    if (target === 'all') {
+      allSection?.classList.remove('hidden');
+      sections.forEach(s => s.classList.remove('hidden'));
+    } else {
+      allSection?.classList.add('hidden');
+      sections.forEach(s => s.classList.toggle('hidden', s.id !== target));
+    }
+  }
+
+  function syncFromHash() {
+    const hash = window.location.hash.slice(1);
+    const targetSection = hash ? document.getElementById(hash) : null;
+    const target = targetSection?.classList.contains('spec-section') ? hash : 'all';
+
+    applyTab(target);
+
+    if (target !== 'all' && targetSection) {
+      requestAnimationFrame(() => {
+        targetSection.scrollIntoView({ behavior: 'smooth' });
+      });
+    }
+  }
+
+  window.addEventListener('hashchange', syncFromHash);
+  syncFromHash();
+</script>

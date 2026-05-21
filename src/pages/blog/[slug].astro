@@ -1,0 +1,99 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+import siteData from '../../content/site.json';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const siteUrl = siteData.siteUrl;
+const postUrl = `${siteUrl}/blog/${post.id}/`;
+
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: post.data.pubDate.toISOString(),
+  dateModified: (post.data.updatedDate || post.data.pubDate).toISOString(),
+  author: {
+    '@type': 'Organization',
+    name: siteData.companyName,
+    url: siteUrl,
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: siteData.companyName,
+    logo: {
+      '@type': 'ImageObject',
+      url: `${siteUrl}/images/logos/zeppelin-logo.png`,
+    },
+  },
+  mainEntityOfPage: postUrl,
+  image: post.data.heroImage ? `${siteUrl}${post.data.heroImage}` : `${siteUrl}${siteData.defaultOgImage}`,
+};
+
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl },
+    { '@type': 'ListItem', position: 2, name: 'Blog', item: `${siteUrl}/blog/` },
+    { '@type': 'ListItem', position: 3, name: post.data.title, item: postUrl },
+  ],
+};
+---
+
+<BaseLayout
+  title={post.data.title}
+  description={post.data.description}
+  ogImage={post.data.ogImage || post.data.heroImage || siteData.defaultOgImage}
+  canonicalPath={`/blog/${post.id}/`}
+  jsonLd={[articleLd, breadcrumbLd]}
+>
+  <article class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <p class="text-sm text-gray-500 mb-4">
+      <a href="/blog/" class="text-brand-orange font-semibold hover:underline">&larr; All posts</a>
+    </p>
+    <header class="mb-10">
+      <time datetime={post.data.pubDate.toISOString()} class="text-sm text-gray-500">
+        {post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+      </time>
+      <h1 class="text-4xl font-bold text-brand-dark mt-2 mb-4">{post.data.title}</h1>
+      <p class="text-lg text-gray-600">{post.data.description}</p>
+    </header>
+
+    {post.data.heroImage && (
+      <img
+        src={post.data.heroImage}
+        alt={post.data.title}
+        class="w-full rounded-xl shadow-lg mb-10 object-cover max-h-[420px]"
+        loading="eager"
+      />
+    )}
+
+    <div class="prose prose-lg max-w-none prose-headings:text-brand-dark prose-a:text-brand-orange">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  @reference "../../styles/global.css";
+  .prose :global(h2) {
+    @apply text-2xl font-bold mt-10 mb-4;
+  }
+  .prose :global(p) {
+    @apply text-gray-600 leading-relaxed mb-4;
+  }
+  .prose :global(ul) {
+    @apply list-disc pl-6 mb-4 text-gray-600 space-y-2;
+  }
+</style>

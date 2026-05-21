@@ -1,0 +1,108 @@
+{
+  "slug": "cortado-mkiii",
+  "name": "Cortado MkIII",
+  "shortName": "MkIII",
+  "tagline": "The original. Robust and versatile.",
+  "price": "$159.95",
+  "accessoryPrice": "$25.00",
+  "accessoryName": "Attachment Accessory Kit",
+  "metaDescription": "Cortado MkIII professional contact microphone — balanced XLR output, switchable pad and bass boost, 23Hz–40kHz response. Built for studio, field, and live sound.",
+  "availability": "InStock",
+  "description": "The Cortado MkIII is a robust and versatile contact microphone that reveals the hidden sounds in the solid world around you. The Cortado's active circuitry delivers a balanced signal with wide bandwidth and flat frequency response which can be driven over very long cable runs with no signal degradation.",
+  "targetUse": "Professional and home recording studios, field recording, sound design, live sound reinforcement",
+  "features": [
+    "Built-in preamp circuit capable of driving a balanced signal through hundreds of feet of cable",
+    "Hand-matched, high quality components for a low noise floor and tonal transparency",
+    "Switchable Bass Boost enables bandwidth from 23Hz to 40kHz",
+    "-10dB switchable pad for loud sound sources",
+    "Sensor encased in an extremely robust metal enclosure",
+    "6 foot (1.8m) high quality shielded cable from chassis to sensor",
+    "Circuit enclosed in 20 gauge steel chassis for electrical shielding and rugged durability",
+    "Requires phantom power from a standard XLR mic cable",
+    "Operating temperature -40°F to 175°F (-40°C to 80°C)"
+  ],
+  "specs": {
+    "Output": "Balanced XLR",
+    "Frequency Response": "23Hz – 40kHz (Bass Boost on)",
+    "Power": "24V – 48V Phantom Power",
+    "Pad": "-10dB switchable",
+    "Bass Boost": "Switchable",
+    "Cable Length": "6 ft (1.8m)",
+    "Chassis": "20 gauge steel",
+    "Sensor Housing": "All-steel, ferrous (magnet-mountable)",
+    "Operating Temp": "-40°F to 175°F (-40°C to 80°C)"
+  },
+  "heroImage": "/images/products/mkiii-hero-34.jpg",
+  "heroImageAlt": "Cortado MkIII contact microphone — three-quarter view showing steel chassis and XLR output",
+  "ogImage": "/images/og/og-mkiii.jpg",
+  "galleryImages": [
+    "/images/products/mkiii-hero-inhand.jpg",
+    "/images/products/mkiii-hero-34.jpg",
+    "/images/products/mkiii-hero-back.jpg",
+    "/images/products/mkiii-hero-guitar.jpg",
+    "/images/products/mkiii-guitar.jpg",
+    "/images/products/mkiii-device.jpg",
+    "/images/products/mkiii-accessories.jpg",
+    "/images/products/mkiii-clamped.jpg",
+    "/images/products/mkiii-on-amp.jpg",
+    "/images/products/mkiii-studio.jpg"
+  ],
+  "galleryAlts": [
+    "Cortado MkIII held in hand during field recording",
+    "Cortado MkIII contact microphone three-quarter product view",
+    "Rear of Cortado MkIII showing pad and bass boost switches",
+    "Cortado MkIII mounted on acoustic guitar soundboard",
+    "Cortado MkIII on guitar body close-up",
+    "Cortado MkIII sensor and chassis detail",
+    "Cortado MkIII with attachment accessory kit",
+    "Cortado MkIII clamped to metal structure",
+    "Cortado MkIII mounted on guitar amplifier",
+    "Cortado MkIII in professional recording studio setup"
+  ],
+  "videos": [
+    {
+      "title": "Short Introduction",
+      "embedId": "99WYPUX1Wxg",
+      "startAt": 2,
+      "category": "overview"
+    },
+    {
+      "title": "Cortado MkIII in the Recording Studio",
+      "embedId": "h8P0mfeAokw",
+      "category": "studio"
+    }
+  ],
+  "playlists": [
+    {
+      "title": "Cortado MkIII In the Field Playlist",
+      "embedId": "1241334652",
+      "provider": "soundcloud",
+      "category": "field"
+    },
+    {
+      "title": "Cortado MkIII In the Studio Playlist",
+      "embedId": "1245542695",
+      "provider": "soundcloud",
+      "category": "studio"
+    }
+  ],
+  "documents": [
+    {
+      "title": "Dimensioned Drawing",
+      "description": "Mechanical drawing with chassis and sensor dimensions",
+      "url": "/docs/cortado-mkiii-dimensions.pdf"
+    },
+    {
+      "title": "Owner's Guide",
+      "description": "Setup, controls, mounting tips, and care",
+      "url": "/docs/cortado-mkiii-owners-guide.pdf"
+    },
+    {
+      "title": "Datasheet",
+      "description": "Full specifications and technical details",
+      "url": "/docs/cortado-mkiii-datasheet.pdf"
+    }
+  ],
+  "sku": "PC3A",
+  "order": 1
+}

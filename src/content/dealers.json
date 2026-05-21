@@ -1,0 +1,46 @@
+{
+  "regions": [
+    {
+      "name": "CANADA",
+      "dealers": [
+        { "name": "Moog Audio", "location": "Montreal, Quebec", "url": "https://www.moogaudio.com" },
+        { "name": "Outside Marketing and Sales", "location": "Toronto, Ontario", "url": "https://www.omscanada.ca" }
+      ]
+    },
+    {
+      "name": "UNITED STATES",
+      "dealers": [
+        { "name": "Ctrl-Mod", "location": "Brooklyn, New York", "url": "https://www.ctrl-mod.com" },
+        { "name": "Music Store Live", "location": "National City, California", "url": "https://www.musicstorelive.com" },
+        { "name": "Noisebug", "location": "Pomona, California", "url": "https://www.noisebug.net" },
+        { "name": "Perfect Circuit", "location": "Burbank, California", "url": "https://www.perfectcircuit.com" },
+        { "name": "Pitbull Audio", "location": "San Diego / National City, California", "url": "https://www.pitbullaudio.com" },
+        { "name": "Vintage King", "location": "Los Angeles, California & Nashville, Tennessee", "url": "https://www.vintageking.com" },
+        { "name": "Zeppelin Design Labs", "location": "Chicago, Illinois", "url": "https://www.zeppelindesignlabs.com" }
+      ]
+    },
+    {
+      "name": "EUROPE",
+      "dealers": [
+        { "name": "Break the Machine", "location": "Holmfirth, England", "url": "https://www.breakthemachine.co.uk" },
+        { "name": "Escape From Noise", "location": "Stockholm, Sweden", "url": "https://www.escapefromnoise.com" },
+        { "name": "Floating Point Audio", "location": "Paris, France", "url": "https://www.floatingpoint.audio" },
+        { "name": "Matrix Pro Audio AS", "location": "Rykkinn, Norway", "url": "https://www.matrixproaudio.no" },
+        { "name": "Nordic Pro Group", "location": "Glücksburg, Germany", "url": "https://www.nordicpro.eu" }
+      ]
+    },
+    {
+      "name": "MIDDLE EAST",
+      "dealers": [
+        { "name": "Joav Shdema Inc", "location": "Tel Aviv", "url": "https://www.rocknroll.co.il" }
+      ]
+    },
+    {
+      "name": "ASIA",
+      "dealers": [
+        { "name": "Altergear Guitar Boutique", "location": "Honjo, Japan", "url": "https://www.guitar-boutique-altergear.com" },
+        { "name": "Music Metro", "location": "Seoul, South Korea", "url": "https://www.musicmetro.co.kr" }
+      ]
+    }
+  ]
+}

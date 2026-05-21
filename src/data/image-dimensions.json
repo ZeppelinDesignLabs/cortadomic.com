@@ -1,0 +1,126 @@
+{
+  "/images/logos/zeppelin-logo.png": {
+    "width": 300,
+    "height": 300
+  },
+  "/images/og/og-home.jpg": {
+    "width": 1200,
+    "height": 630
+  },
+  "/images/og/og-mkiii.jpg": {
+    "width": 1200,
+    "height": 630
+  },
+  "/images/og/og-xe.jpg": {
+    "width": 1200,
+    "height": 630
+  },
+  "/images/products/mkiii-accessories.jpg": {
+    "width": 1200,
+    "height": 1200
+  },
+  "/images/products/mkiii-basketball-court.jpg": {
+    "width": 2000,
+    "height": 958
+  },
+  "/images/products/mkiii-clamped.jpg": {
+    "width": 1200,
+    "height": 1200
+  },
+  "/images/products/mkiii-cord.jpg": {
+    "width": 1200,
+    "height": 1200
+  },
+  "/images/products/mkiii-device.jpg": {
+    "width": 1200,
+    "height": 1200
+  },
+  "/images/products/mkiii-gradient.jpg": {
+    "width": 1200,
+    "height": 1200
+  },
+  "/images/products/mkiii-guitar.jpg": {
+    "width": 1000,
+    "height": 1000
+  },
+  "/images/products/mkiii-hero-34.jpg": {
+    "width": 2000,
+    "height": 1334
+  },
+  "/images/products/mkiii-hero-back.jpg": {
+    "width": 2000,
+    "height": 1334
+  },
+  "/images/products/mkiii-hero-guitar.jpg": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/images/products/mkiii-hero-inhand.jpg": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/images/products/mkiii-hero.jpg": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/images/products/mkiii-in-hand.jpg": {
+    "width": 1200,
+    "height": 1200
+  },
+  "/images/products/mkiii-montrose-tower.jpg": {
+    "width": 900,
+    "height": 1200
+  },
+  "/images/products/mkiii-on-amp.jpg": {
+    "width": 1333,
+    "height": 1000
+  },
+  "/images/products/mkiii-on-guitar.jpg": {
+    "width": 1333,
+    "height": 1000
+  },
+  "/images/products/mkiii-plug.jpg": {
+    "width": 1200,
+    "height": 1200
+  },
+  "/images/products/mkiii-studio.jpg": {
+    "width": 1200,
+    "height": 1200
+  },
+  "/images/products/mkiii-switches.jpg": {
+    "width": 1200,
+    "height": 1200
+  },
+  "/images/products/mkiii-wall-clock.jpg": {
+    "width": 945,
+    "height": 935
+  },
+  "/images/products/mkiii-washing-machine.jpg": {
+    "width": 1333,
+    "height": 1000
+  },
+  "/images/products/xe-2.png": {
+    "width": 746,
+    "height": 920
+  },
+  "/images/products/xe-3.jpg": {
+    "width": 1824,
+    "height": 2336
+  },
+  "/images/products/xe-box.jpg": {
+    "width": 2000,
+    "height": 985
+  },
+  "/images/products/xe-on-guitar.jpg": {
+    "width": 2000,
+    "height": 1490
+  },
+  "/images/products/xe-pouch.jpg": {
+    "width": 2000,
+    "height": 1093
+  },
+  "/images/products/xe-sensor-closeup.jpg": {
+    "width": 2000,
+    "height": 3552
+  }
+}

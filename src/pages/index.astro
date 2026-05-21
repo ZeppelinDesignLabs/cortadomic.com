@@ -1,0 +1,218 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProductCard from '../components/ProductCard.astro';
+import Picture from '../components/Picture.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const productsDir = path.join(process.cwd(), 'src/content/products');
+const productFiles = fs.readdirSync(productsDir).filter((f: string) => f.endsWith('.json'));
+const products = productFiles
+  .map((f: string) => JSON.parse(fs.readFileSync(path.join(productsDir, f), 'utf-8')))
+  .sort((a: any, b: any) => a.order - b.order);
+
+const heroSlides = [
+  { image: '/images/products/mkiii-hero-inhand.jpg', caption: 'Cortado MkIII — The original. Robust and versatile.', position: 'center' },
+  { image: '/images/products/xe-on-guitar.jpg', caption: 'NEW — Cortado Xe. Compact. All-in-one. Studio-grade.', position: 'center' },
+  { image: '/images/products/mkiii-hero-guitar.jpg', caption: 'Acoustic instruments — Capture every resonance.', position: 'center' },
+  { image: '/images/products/mkiii-hero-34.jpg', caption: 'Cortado MkIII — Steel chassis, balanced XLR output.', position: 'center' },
+  { image: '/images/products/mkiii-hero-back.jpg', caption: 'Cortado MkIII — Switchable pad and bass boost controls.', position: 'center' },
+];
+---
+
+<BaseLayout
+  title="Cortado Contact Microphones by Zeppelin Design Labs"
+  description="Professional contact microphones for acoustic instruments, foley, field recording, and live sound. Explore the Cortado Xe and MkIII — studio-grade vibration capture from Zeppelin Design Labs."
+  ogImage="/images/og/og-home.jpg"
+  lcpImage={heroSlides[0].image}
+  preconnectYoutube={true}
+>
+  <!-- Full-Width Hero Section with Background Image Carousel -->
+  <section class="relative text-white overflow-hidden" id="hero-section">
+    {heroSlides.map((slide, i) => (
+      <div class:list={["hero-slide absolute inset-0 transition-opacity duration-1000", i === 0 ? "opacity-100" : "opacity-0"]}>
+        <Picture
+          src={slide.image}
+          alt={slide.caption}
+          class="absolute inset-0 w-full h-full object-cover"
+          style={`object-position: ${slide.position};`}
+          loading={i === 0 ? 'eager' : 'lazy'}
+          fetchpriority={i === 0 ? 'high' : 'auto'}
+        />
+        <div class="absolute inset-0 bg-gradient-to-r from-brand-dark/90 via-brand-dark/70 to-brand-dark/40"></div>
+      </div>
+    ))}
+    <div class="relative min-h-[70vh] lg:min-h-[80vh] flex items-center">
+      <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
+        <p class="text-brand-orange font-bold text-sm uppercase tracking-widest mb-4">Zeppelin Design Labs</p>
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 max-w-2xl">
+          Cortado Contact<br />
+          <span class="text-brand-orange">Microphones</span>
+        </h1>
+        <p class="text-xl text-gray-200 mb-4 max-w-xl" id="hero-caption">
+          {heroSlides[0].caption}
+        </p>
+        <p class="text-lg text-gray-300 mb-8 max-w-lg">
+          Revealing the hidden sounds in the solid world around you. Professional contact microphones for studio, field, and stage.
+        </p>
+        <div class="flex flex-wrap gap-4 mb-8">
+          <a href="#products" class="bg-brand-orange text-white px-8 py-3 rounded-full font-bold text-lg hover:bg-brand-orange-light transition-colors">
+            Explore Models
+          </a>
+          <a href="/dealers/" class="border-2 border-white text-white px-8 py-3 rounded-full font-bold text-lg hover:bg-white hover:text-brand-dark transition-colors">
+            Find a Dealer
+          </a>
+        </div>
+        <div class="flex gap-3">
+          {heroSlides.map((_, i) => (
+            <button
+              class:list={["hero-dot w-3 h-3 rounded-full transition-colors cursor-pointer", i === 0 ? "bg-brand-orange" : "bg-white/40"]}
+              data-index={i}
+              aria-label={`Show slide ${i + 1}`}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Products Grid -->
+  <section id="products" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl md:text-4xl font-bold text-brand-dark mb-4">The Cortado Family</h2>
+      <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+        Each Cortado microphone is designed for specific applications. Find the right model for your needs.
+      </p>
+    </div>
+    <div class="grid md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
+      {products.map((p: any) => <ProductCard product={p} />)}
+    </div>
+  </section>
+
+  <!-- Video Showcase -->
+  <section class="bg-brand-dark text-white py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <p class="text-brand-orange font-bold text-sm uppercase tracking-widest mb-3">See It In Action</p>
+          <h2 class="text-3xl md:text-4xl font-bold mb-6">Hear the Hidden Sounds</h2>
+          <p class="text-gray-300 text-lg mb-6 leading-relaxed">
+            From washing machines and shopping carts to acoustic guitars and NBA basketball courts &mdash; the Cortado reveals sounds you never knew were there.
+          </p>
+          <ul class="space-y-3 text-gray-300 mb-8">
+            <li class="flex items-center gap-3">
+              <span class="w-2 h-2 bg-brand-orange rounded-full flex-shrink-0"></span>
+              Sound design &amp; foley recording
+            </li>
+            <li class="flex items-center gap-3">
+              <span class="w-2 h-2 bg-brand-orange rounded-full flex-shrink-0"></span>
+              Music studio &amp; acoustic instruments
+            </li>
+            <li class="flex items-center gap-3">
+              <span class="w-2 h-2 bg-brand-orange rounded-full flex-shrink-0"></span>
+              Live venue sound reinforcement
+            </li>
+            <li class="flex items-center gap-3">
+              <span class="w-2 h-2 bg-brand-orange rounded-full flex-shrink-0"></span>
+              Field recording &amp; found sound
+            </li>
+          </ul>
+          <a href="/video-audio/" class="inline-block text-brand-orange font-bold hover:underline">
+            More videos &amp; audio samples &rarr;
+          </a>
+        </div>
+        <div class="aspect-video rounded-xl overflow-hidden shadow-2xl">
+          <iframe
+            src="https://www.youtube.com/embed/99WYPUX1Wxg?rel=0"
+            title="The Cortado MkIII Contact Microphone"
+            class="w-full h-full"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            loading="lazy"
+          ></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Teaser Comparison -->
+  <section class="bg-brand-light py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold text-brand-dark mb-4">Quick Comparison</h2>
+        <p class="text-gray-600 text-lg">Key differences at a glance</p>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full max-w-4xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+          <thead>
+            <tr class="bg-brand-dark text-white">
+              <th class="px-6 py-4 text-left font-bold">Feature</th>
+              {products.map((p: any) => (
+                <th class="px-6 py-4 text-center font-bold">{p.shortName}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            <tr>
+              <td class="px-6 py-4 font-medium text-gray-700">Target Use</td>
+              {products.map((p: any) => (
+                <td class="px-6 py-4 text-center text-sm text-gray-600">{p.targetUse}</td>
+              ))}
+            </tr>
+            <tr class="bg-gray-50">
+              <td class="px-6 py-4 font-medium text-gray-700">Output</td>
+              {products.map((p: any) => (
+                <td class="px-6 py-4 text-center text-sm text-gray-600">{p.specs.Output}</td>
+              ))}
+            </tr>
+            <tr>
+              <td class="px-6 py-4 font-medium text-gray-700">Frequency Response</td>
+              {products.map((p: any) => (
+                <td class="px-6 py-4 text-center text-sm text-gray-600">{p.specs['Frequency Response']}</td>
+              ))}
+            </tr>
+            <tr class="bg-gray-50">
+              <td class="px-6 py-4 font-medium text-gray-700">Price</td>
+              {products.map((p: any) => (
+                <td class="px-6 py-4 text-center font-bold text-brand-dark">
+                  {p.price === "TBD" ? "Coming Soon" : `MSRP ${p.price}`}
+                </td>
+              ))}
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="text-center mt-8">
+        <a href="/compare/" class="inline-block bg-brand-orange text-white px-8 py-3 rounded-full font-bold text-lg hover:bg-brand-orange-light transition-colors">
+          Compare All Specs &rarr;
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script is:inline define:vars={{ heroSlides }}>
+  const slides = document.querySelectorAll('.hero-slide');
+  const dots = document.querySelectorAll('.hero-dot');
+  const captionEl = document.getElementById('hero-caption');
+  const slideData = heroSlides;
+  if (slides.length > 1) {
+    let current = 0;
+    function showSlide(index) {
+      slides.forEach((s, i) => {
+        s.classList.toggle('opacity-100', i === index);
+        s.classList.toggle('opacity-0', i !== index);
+      });
+      dots.forEach((d, i) => {
+        d.classList.toggle('bg-brand-orange', i === index);
+        d.classList.toggle('bg-white/40', i !== index);
+      });
+      if (captionEl && slideData[index]) {
+        captionEl.textContent = slideData[index].caption;
+      }
+      current = index;
+    }
+    dots.forEach(d => d.addEventListener('click', () => showSlide(Number(d.dataset.index))));
+    setInterval(() => showSlide((current + 1) % slides.length), 5000);
+  }
+</script>

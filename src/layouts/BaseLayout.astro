@@ -1,0 +1,258 @@
+---
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import siteData from '../content/site.json';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonicalPath?: string;
+  ogImage?: string;
+  ogType?: string;
+  noindex?: boolean;
+  jsonLd?: object | object[];
+  lcpImage?: string;
+  preconnectYoutube?: boolean;
+}
+
+const {
+  title,
+  description,
+  canonicalPath,
+  ogImage,
+  ogType,
+  noindex,
+  jsonLd,
+  lcpImage,
+  preconnectYoutube = false,
+} = Astro.props;
+const pageTitle = title ? `${title} - ${siteData.siteName}` : siteData.siteName;
+const pageDescription = description || siteData.description;
+const siteUrl = siteData.siteUrl;
+const canonicalUrl = `${siteUrl}${canonicalPath || Astro.url.pathname}`;
+const ogImageUrl = `${siteUrl}${ogImage || siteData.defaultOgImage}`;
+const resolvedOgType = ogType || 'website';
+const twitterHandle = siteData.twitterHandle?.replace(/^@/, '') || '';
+
+const lcpBase = lcpImage
+  ? (lcpImage.lastIndexOf('.') > 0 ? lcpImage.slice(0, lcpImage.lastIndexOf('.')) : lcpImage)
+  : null;
+
+import fs from 'node:fs';
+import path from 'node:path';
+const productsDir = path.join(process.cwd(), 'src/content/products');
+const productFiles = fs.readdirSync(productsDir).filter((f: string) => f.endsWith('.json'));
+const products = productFiles
+  .map((f: string) => JSON.parse(fs.readFileSync(path.join(productsDir, f), 'utf-8')))
+  .sort((a: any, b: any) => a.order - b.order);
+
+const organizationLd = {
+  "@context": "https://schema.org",
+  "@type": ["Organization", "LocalBusiness"],
+  "@id": `${siteUrl}/#organization`,
+  name: siteData.companyName,
+  url: siteUrl,
+  logo: `${siteUrl}/images/logos/zeppelin-logo.png`,
+  image: `${siteUrl}/images/logos/zeppelin-logo.png`,
+  description: siteData.description,
+  email: siteData.contactEmail,
+  telephone: siteData.telephone || undefined,
+  priceRange: "$$",
+  contactPoint: {
+    "@type": "ContactPoint",
+    email: siteData.contactEmail,
+    contactType: "customer service",
+    areaServed: "Worldwide",
+    availableLanguage: "English",
+  },
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "31w154 91st St, Unit #113",
+    addressLocality: "Naperville",
+    addressRegion: "IL",
+    postalCode: "60564",
+    addressCountry: "US",
+  },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 41.7508,
+    longitude: -88.1535,
+  },
+  openingHoursSpecification: [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      opens: "09:00",
+      closes: "17:00",
+    },
+  ],
+  sameAs: siteData.sameAs || [],
+};
+
+const websiteLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: siteData.siteName,
+  url: siteUrl,
+  publisher: { "@id": `${siteUrl}/#organization` },
+};
+
+const allJsonLd = [organizationLd, websiteLd, ...(jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [])];
+
+const gaId = siteData.analytics?.ga4MeasurementId;
+const analyticsEnabled = Boolean(gaId);
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content={pageDescription} />
+  <title>{pageTitle}</title>
+
+  <link rel="canonical" href={canonicalUrl} />
+  <link rel="alternate" type="application/rss+xml" title={`${siteData.siteName} Blog`} href={`${siteUrl}/rss.xml`} />
+  {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+  {lcpBase && (
+    <>
+      <link rel="preload" as="image" href={`${lcpBase}.avif`} type="image/avif" fetchpriority="high" />
+      <link rel="preload" as="image" href={`${lcpBase}.webp`} type="image/webp" fetchpriority="high" />
+    </>
+  )}
+
+  <!-- Favicons (Zeppelin Design Labs mark) -->
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <meta name="theme-color" content="#e8731a" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content={pageTitle} />
+  <meta property="og:description" content={pageDescription} />
+  <meta property="og:image" content={ogImageUrl} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content={canonicalUrl} />
+  <meta property="og:type" content={resolvedOgType} />
+  <meta property="og:site_name" content={siteData.siteName} />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={pageTitle} />
+  <meta name="twitter:description" content={pageDescription} />
+  <meta name="twitter:image" content={ogImageUrl} />
+  {twitterHandle && (
+    <>
+      <meta name="twitter:site" content={`@${twitterHandle}`} />
+      <meta name="twitter:creator" content={`@${twitterHandle}`} />
+    </>
+  )}
+
+  <!-- JSON-LD Structured Data -->
+  {allJsonLd.map((ld) => (
+    <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+  ))}
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  {preconnectYoutube && (
+    <>
+      <link rel="preconnect" href="https://www.youtube.com" />
+      <link rel="preconnect" href="https://i.ytimg.com" />
+    </>
+  )}
+  <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap" rel="stylesheet" />
+
+  {analyticsEnabled && (
+    <script is:inline define:vars={{ gaId }}>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('consent', 'default', {
+        analytics_storage: 'denied',
+        ad_storage: 'denied',
+        wait_for_update: 500,
+      });
+      function loadGA() {
+        if (window.__gaLoaded) return;
+        window.__gaLoaded = true;
+        const s = document.createElement('script');
+        s.async = true;
+        s.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
+        document.head.appendChild(s);
+        gtag('js', new Date());
+        gtag('config', gaId, { anonymize_ip: true });
+        gtag('consent', 'update', { analytics_storage: 'granted' });
+      }
+      if (localStorage.getItem('cortadomic_analytics') === 'granted') {
+        loadGA();
+      } else {
+        window.enableCortadomicAnalytics = loadGA;
+      }
+    </script>
+  )}
+</head>
+<body class="bg-white text-gray-900 font-sans min-h-screen flex flex-col">
+  <Nav products={products} />
+  <main class="flex-1">
+    <slot />
+  </main>
+  <Footer />
+  {siteData.chatwayWidgetId && (
+    <>
+      <link rel="dns-prefetch" href="https://cdn.chatway.app" />
+      <script
+        is:inline
+        src={`https://cdn.chatway.app/widget.js?id=${siteData.chatwayWidgetId}`}
+        defer
+      ></script>
+    </>
+  )}
+  {analyticsEnabled && (
+    <div id="analytics-consent" class="fixed bottom-0 inset-x-0 z-[60] p-4 hidden">
+      <div class="max-w-3xl mx-auto bg-brand-dark text-white rounded-xl shadow-2xl p-4 flex flex-col sm:flex-row sm:items-center gap-4">
+        <p class="text-sm text-gray-200 flex-1">
+          We use analytics cookies to understand how visitors use cortadomic.com. You can accept or decline.
+        </p>
+        <div class="flex gap-2 shrink-0">
+          <button type="button" id="analytics-decline" class="px-4 py-2 rounded-full border border-gray-500 text-sm font-semibold hover:bg-gray-800">
+            Decline
+          </button>
+          <button type="button" id="analytics-accept" class="px-4 py-2 rounded-full bg-brand-orange text-sm font-bold hover:bg-brand-orange-light">
+            Accept
+          </button>
+        </div>
+      </div>
+    </div>
+    <script is:inline>
+      (function () {
+        const key = 'cortadomic_analytics';
+        const banner = document.getElementById('analytics-consent');
+        const accept = document.getElementById('analytics-accept');
+        const decline = document.getElementById('analytics-decline');
+        if (!banner || !accept || !decline) return;
+        if (localStorage.getItem(key)) {
+          if (localStorage.getItem(key) === 'granted' && typeof window.enableCortadomicAnalytics === 'function') {
+            window.enableCortadomicAnalytics();
+          }
+          return;
+        }
+        banner.classList.remove('hidden');
+        accept.addEventListener('click', () => {
+          localStorage.setItem(key, 'granted');
+          banner.classList.add('hidden');
+          if (typeof window.enableCortadomicAnalytics === 'function') window.enableCortadomicAnalytics();
+        });
+        decline.addEventListener('click', () => {
+          localStorage.setItem(key, 'denied');
+          banner.classList.add('hidden');
+        });
+      })();
+    </script>
+  )}
+</body>
+</html>

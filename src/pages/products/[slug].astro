@@ -1,0 +1,242 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Picture from '../../components/Picture.astro';
+import GalleryLightbox from '../../components/GalleryLightbox.astro';
+import siteData from '../../content/site.json';
+import { buildVideoListJsonLd, productMerchantExtras } from '../../lib/seo';
+import fs from 'node:fs';
+import path from 'node:path';
+
+export function getStaticPaths() {
+  const productsDir = path.join(process.cwd(), 'src/content/products');
+  const files = fs.readdirSync(productsDir).filter((f: string) => f.endsWith('.json'));
+  return files.map((f: string) => {
+    const product = JSON.parse(fs.readFileSync(path.join(productsDir, f), 'utf-8'));
+    return { params: { slug: product.slug }, props: { product } };
+  });
+}
+
+const { product } = Astro.props;
+const siteUrl = siteData.siteUrl;
+
+const priceNum = product.price.replace(/[^0-9.]/g, '');
+
+const productLd = {
+  "@context": "https://schema.org",
+  "@type": "Product",
+  name: product.name,
+  description: product.metaDescription || product.description,
+  image: (product.galleryImages && product.galleryImages.length > 0
+    ? product.galleryImages
+    : [product.heroImage]
+  ).map((img: string) => `${siteUrl}${img}`),
+  brand: {
+    "@type": "Brand",
+    name: siteData.companyName,
+  },
+  ...(product.sku ? { sku: product.sku, mpn: product.sku } : {}),
+  offers: {
+    "@type": "Offer",
+    price: priceNum,
+    priceCurrency: "USD",
+    availability: `https://schema.org/${product.availability || 'InStock'}`,
+    url: `${siteUrl}/products/${product.slug}/`,
+    itemCondition: "https://schema.org/NewCondition",
+    seller: {
+      "@type": "Organization",
+      name: siteData.companyName,
+    },
+    ...productMerchantExtras(),
+  },
+};
+
+const productPageUrl = `${siteUrl}/products/${product.slug}/`;
+const videoLd = buildVideoListJsonLd(product.videos || [], productPageUrl);
+
+const breadcrumbLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
+    { "@type": "ListItem", position: 2, name: "Products", item: `${siteUrl}/compare/` },
+    { "@type": "ListItem", position: 3, name: product.name, item: `${siteUrl}/products/${product.slug}/` },
+  ],
+};
+---
+
+<BaseLayout
+  title={product.name}
+  description={product.metaDescription || product.description}
+  ogImage={product.ogImage || product.heroImage}
+  ogType="product"
+  lcpImage={product.heroImage}
+  preconnectYoutube={product.videos?.some((v: any) => v.embedId)}
+  jsonLd={[productLd, breadcrumbLd, ...videoLd]}
+>
+  <!-- Full-Width Hero with Background Image -->
+  <section class="relative text-white overflow-hidden">
+    <div class="absolute inset-0">
+      <Picture
+        src={product.heroImage}
+        alt={product.heroImageAlt || `${product.name} contact microphone`}
+        class="w-full h-full object-cover"
+        loading="eager"
+        fetchpriority="high"
+      />
+    </div>
+    <div class="absolute inset-0 bg-gradient-to-r from-brand-dark/90 via-brand-dark/70 to-brand-dark/30"></div>
+    <div class="relative min-h-[60vh] lg:min-h-[70vh] flex items-center">
+      <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
+        <p class="text-brand-orange font-bold text-sm uppercase tracking-widest mb-3">Cortado Contact Microphone</p>
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">{product.name}</h1>
+        <p class="text-brand-orange text-xl font-semibold mb-6">{product.tagline}</p>
+        <p class="text-gray-200 text-lg mb-8 leading-relaxed max-w-xl">{product.description}</p>
+        <div class="flex flex-wrap items-center gap-6 mb-6">
+          <span class="text-3xl font-bold">
+            {product.price === "TBD" ? "Coming Soon" : `MSRP ${product.price}`}
+          </span>
+        </div>
+        <div class="flex flex-wrap gap-4">
+          <a href="/dealers/" class="bg-brand-orange text-white px-8 py-3 rounded-full font-bold text-lg hover:bg-brand-orange-light transition-colors">
+            Find a Dealer
+          </a>
+          <a href={`/compare/#${product.slug}`} class="border-2 border-white text-white px-8 py-3 rounded-full font-bold text-lg hover:bg-white hover:text-brand-dark transition-colors">
+            View Full Specs
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features + Specs + Downloads -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <h2 class="text-3xl font-bold text-brand-dark mb-8">Key Features</h2>
+    <div class="grid md:grid-cols-2 gap-4 mb-12">
+      {product.features.map((feature: string) => (
+        <div class="flex items-start gap-3 p-4 bg-brand-light rounded-lg">
+          <svg class="w-6 h-6 text-brand-orange flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          <span class="text-gray-700">{feature}</span>
+        </div>
+      ))}
+    </div>
+
+    {(product.specs || (product.documents && product.documents.length > 0)) && (
+      <div class="grid lg:grid-cols-2 gap-10 lg:gap-12 pt-4 border-t border-gray-200">
+        {product.specs && (
+          <div>
+            <h3 class="text-2xl font-bold text-brand-dark mb-5">Specifications</h3>
+            <dl class="divide-y divide-gray-200 border border-gray-200 rounded-lg overflow-hidden bg-white">
+              {Object.entries(product.specs).map(([label, value]) => (
+                <div class="grid grid-cols-[40%_60%] gap-4 px-4 py-3 even:bg-gray-50">
+                  <dt class="font-semibold text-brand-dark text-sm">{label}</dt>
+                  <dd class="text-gray-700 text-sm">{value}</dd>
+                </div>
+              ))}
+            </dl>
+            <p class="text-xs text-gray-500 mt-3">
+              Want a side-by-side?
+              <a href={`/compare/#${product.slug}`} class="text-brand-orange font-semibold hover:underline">Compare all models &rarr;</a>
+            </p>
+          </div>
+        )}
+
+        {product.documents && product.documents.length > 0 && (
+          <div>
+            <h3 class="text-2xl font-bold text-brand-dark mb-5">Downloads</h3>
+            <ul class="space-y-3">
+              {product.documents.map((doc: any) => (
+                <li>
+                  <a
+                    href={doc.url}
+                    target="_blank"
+                    rel="noopener"
+                    class="flex items-start gap-4 p-4 bg-white rounded-lg border border-gray-200 hover:border-brand-orange hover:shadow-md transition-all group"
+                  >
+                    <svg class="w-9 h-9 text-brand-orange flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    <div class="flex-1 min-w-0">
+                      <p class="font-bold text-brand-dark group-hover:text-brand-orange transition-colors">{doc.title}</p>
+                      {doc.description && <p class="text-sm text-gray-600 mt-0.5">{doc.description}</p>}
+                      <p class="text-xs text-gray-500 mt-1 uppercase tracking-wider">PDF Download</p>
+                    </div>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    )}
+  </section>
+
+  <!-- In the Box -->
+  {product.inTheBox && product.inTheBox.length > 0 && (
+    <section class="bg-brand-light py-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-2xl md:text-3xl font-bold text-brand-dark mb-6 text-center">In the Box</h2>
+        <ul class="flex flex-wrap justify-center gap-3 max-w-3xl mx-auto">
+          {product.inTheBox.map((item: string) => (
+            <li class="bg-white px-5 py-2 rounded-full shadow text-gray-700 text-sm font-medium">{item}</li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  <!-- Accessory -->
+  {product.accessoryName && (
+    <section class="bg-brand-light py-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-2xl font-bold text-brand-dark mb-2">{product.accessoryName}</h2>
+        <p class="text-xl text-brand-orange font-bold">MSRP {product.accessoryPrice}</p>
+      </div>
+    </section>
+  )}
+
+  <!-- Gallery -->
+  {product.galleryImages && product.galleryImages.length > 1 && (
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <h2 class="text-3xl font-bold text-brand-dark mb-8">Gallery</h2>
+      <GalleryLightbox images={product.galleryImages} altPrefix={product.name} imageAlts={product.galleryAlts} />
+    </section>
+  )}
+
+  <!-- Videos -->
+  {product.videos.length > 0 && (
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <h2 class="text-3xl font-bold text-brand-dark mb-8">Videos</h2>
+      <div class="grid md:grid-cols-2 gap-8">
+        {product.videos.map((video: any) => (
+          <div>
+            <h3 class="text-lg font-bold mb-3">{video.title}</h3>
+            {video.embedId ? (
+              <div class="aspect-video bg-gray-100 rounded-lg overflow-hidden">
+                <iframe
+                  src={`https://www.youtube.com/embed/${video.embedId}${video.startAt ? `?start=${video.startAt}&rel=0` : '?rel=0'}`}
+                  title={video.title}
+                  class="w-full h-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                  loading="lazy"
+                />
+              </div>
+            ) : (
+              <div class="aspect-video bg-gray-100 rounded-lg flex items-center justify-center text-gray-400">
+                Video coming soon
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+      <div class="mt-8 text-center">
+        <a href="/video-audio/" class="text-brand-orange font-bold hover:underline">
+          View all videos &amp; audio samples &rarr;
+        </a>
+      </div>
+    </section>
+  )}
+
+</BaseLayout>

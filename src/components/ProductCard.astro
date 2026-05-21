@@ -1,0 +1,39 @@
+---
+import Picture from './Picture.astro';
+interface Props {
+  product: any;
+}
+
+const { product } = Astro.props;
+---
+
+<div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 flex flex-col">
+  <div class="aspect-[4/3] bg-gray-100 overflow-hidden relative">
+    <Picture
+      src={product.heroImage}
+      alt={product.name}
+      class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+    />
+    {product.badge && (
+      <div class="absolute top-4 right-4 bg-brand-orange text-white text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full shadow-lg">
+        {product.badge}
+      </div>
+    )}
+  </div>
+  <div class="p-6 flex-1 flex flex-col">
+    <h3 class="text-2xl font-bold text-brand-dark mb-1">{product.name}</h3>
+    <p class="text-brand-orange font-semibold mb-3">{product.tagline}</p>
+    <p class="text-gray-600 text-sm mb-4 flex-1">{product.targetUse}</p>
+    <div class="flex items-center justify-between mt-auto">
+      <span class="text-xl font-bold text-brand-dark">
+        {product.price === "TBD" ? "Coming Soon" : `MSRP ${product.price}`}
+      </span>
+      <a
+        href={`/products/${product.slug}/`}
+        class="inline-block bg-brand-orange text-white px-5 py-2 rounded-full font-bold hover:bg-brand-orange-light transition-colors"
+      >
+        Learn More
+      </a>
+    </div>
+  </div>
+</div>

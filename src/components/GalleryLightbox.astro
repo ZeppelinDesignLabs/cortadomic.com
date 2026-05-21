@@ -1,0 +1,147 @@
+---
+import Picture from './Picture.astro';
+
+interface Props {
+  images: string[];
+  altPrefix: string;
+  imageAlts?: string[];
+}
+
+const { images, altPrefix, imageAlts = [] } = Astro.props;
+
+function altForIndex(i: number) {
+  return imageAlts[i] || `${altPrefix} — image ${i + 1}`;
+}
+const galleryId = `gallery-${crypto.randomUUID().slice(0, 8)}`;
+---
+
+<div
+  class="gallery-lightbox"
+  data-gallery-id={galleryId}
+  data-images={JSON.stringify(images)}
+  data-alt-prefix={altPrefix}
+>
+  <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    {images.map((src: string, i: number) => (
+      <button
+        type="button"
+        class="gallery-thumb group aspect-square bg-gray-100 rounded-lg overflow-hidden cursor-pointer border-0 p-0 w-full"
+        data-index={i}
+        aria-label={`View ${altPrefix} — image ${i + 1}`}
+      >
+        <Picture
+          src={src}
+          alt={altForIndex(i)}
+          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+        />
+      </button>
+    ))}
+  </div>
+
+  <div
+    class="gallery-overlay hidden fixed inset-0 z-50 bg-black/90"
+    data-gallery-overlay={galleryId}
+    role="dialog"
+    aria-modal="true"
+    aria-label={`${altPrefix} image gallery`}
+  >
+    <button
+      type="button"
+      class="gallery-close absolute top-4 right-4 z-10 text-white/80 hover:text-white p-2 rounded-full hover:bg-white/10 transition-colors"
+      aria-label="Close gallery"
+    >
+      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+
+    <button
+      type="button"
+      class="gallery-prev absolute left-2 md:left-6 top-1/2 -translate-y-1/2 z-10 text-white/80 hover:text-white p-2 md:p-3 rounded-full hover:bg-white/10 transition-colors"
+      aria-label="Previous image"
+    >
+      <svg class="w-8 h-8 md:w-10 md:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+    </button>
+
+    <button
+      type="button"
+      class="gallery-next absolute right-2 md:right-6 top-1/2 -translate-y-1/2 z-10 text-white/80 hover:text-white p-2 md:p-3 rounded-full hover:bg-white/10 transition-colors"
+      aria-label="Next image"
+    >
+      <svg class="w-8 h-8 md:w-10 md:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+      </svg>
+    </button>
+
+    <div class="absolute inset-0 flex items-center justify-center p-4 md:p-16 pointer-events-none">
+      <img
+        class="gallery-image max-h-full max-w-full object-contain pointer-events-auto select-none"
+        src=""
+        alt=""
+        draggable="false"
+      />
+    </div>
+
+    <p class="gallery-counter absolute bottom-4 left-1/2 -translate-x-1/2 text-white/70 text-sm font-medium"></p>
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    if (window.__galleryLightboxInit) return;
+    window.__galleryLightboxInit = true;
+
+    document.querySelectorAll('.gallery-lightbox').forEach((gallery) => {
+      const images = JSON.parse(gallery.dataset.images || '[]');
+      const altPrefix = gallery.dataset.altPrefix || 'Gallery';
+      const overlay = gallery.querySelector('[data-gallery-overlay]');
+      if (!overlay || images.length === 0) return;
+
+      const img = overlay.querySelector('.gallery-image');
+      const counter = overlay.querySelector('.gallery-counter');
+      const closeBtn = overlay.querySelector('.gallery-close');
+      const prevBtn = overlay.querySelector('.gallery-prev');
+      const nextBtn = overlay.querySelector('.gallery-next');
+      let currentIndex = 0;
+
+      function showImage(index) {
+        currentIndex = (index + images.length) % images.length;
+        img.src = images[currentIndex];
+        img.alt = `${altPrefix} — image ${currentIndex + 1}`;
+        counter.textContent = `${currentIndex + 1} / ${images.length}`;
+      }
+
+      function open(index) {
+        showImage(index);
+        overlay.classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
+      }
+
+      function close() {
+        overlay.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+      }
+
+      gallery.querySelectorAll('.gallery-thumb').forEach((thumb) => {
+        thumb.addEventListener('click', () => open(Number(thumb.dataset.index)));
+      });
+
+      closeBtn.addEventListener('click', close);
+      prevBtn.addEventListener('click', (e) => { e.stopPropagation(); showImage(currentIndex - 1); });
+      nextBtn.addEventListener('click', (e) => { e.stopPropagation(); showImage(currentIndex + 1); });
+
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) close();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (overlay.classList.contains('hidden')) return;
+        if (e.key === 'Escape') close();
+        if (e.key === 'ArrowLeft') showImage(currentIndex - 1);
+        if (e.key === 'ArrowRight') showImage(currentIndex + 1);
+      });
+    });
+  })();
+</script>

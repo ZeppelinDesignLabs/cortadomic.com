@@ -1,0 +1,60 @@
+---
+/**
+ * Renders a <picture> element with AVIF + WebP + original (JPEG/PNG) sources.
+ * Assumes optimize-images.mjs has produced .avif and .webp siblings of `src`.
+ *
+ * Usage:
+ *   <Picture src="/images/products/xe-2.png" alt="Cortado Xe" class="w-full h-full object-cover" />
+ *   <Picture src="/images/foo.jpg" alt="..." width={1600} height={900} loading="eager" fetchpriority="high" />
+ */
+interface Props {
+  src: string;
+  alt: string;
+  class?: string;
+  style?: string;
+  width?: number;
+  height?: number;
+  loading?: 'eager' | 'lazy';
+  decoding?: 'auto' | 'async' | 'sync';
+  fetchpriority?: 'high' | 'low' | 'auto';
+  sizes?: string;
+}
+
+const {
+  src,
+  alt,
+  class: className,
+  style,
+  width,
+  height,
+  loading = 'lazy',
+  decoding = 'async',
+  fetchpriority,
+  sizes,
+} = Astro.props;
+
+const lastDot = src.lastIndexOf('.');
+const baseNoExt = lastDot > 0 ? src.slice(0, lastDot) : src;
+const avif = `${baseNoExt}.avif`;
+const webp = `${baseNoExt}.webp`;
+
+import dimensionsMap from '../data/image-dimensions.json';
+const autoDims = !width && !height ? (dimensionsMap as Record<string, { width: number; height: number }>)[src] : undefined;
+const resolvedWidth = width ?? autoDims?.width;
+const resolvedHeight = height ?? autoDims?.height;
+---
+<picture>
+  <source type="image/avif" srcset={avif} {...(sizes ? { sizes } : {})} />
+  <source type="image/webp" srcset={webp} {...(sizes ? { sizes } : {})} />
+  <img
+    src={src}
+    alt={alt}
+    class={className}
+    style={style}
+    width={resolvedWidth}
+    height={resolvedHeight}
+    loading={loading}
+    decoding={decoding}
+    fetchpriority={fetchpriority}
+  />
+</picture>

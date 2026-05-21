@@ -1,0 +1,145 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Picture from '../components/Picture.astro';
+import faqData from '../content/faq.json';
+import { buildFaqJsonLd } from '../lib/seo';
+
+const faqLd = buildFaqJsonLd(faqData);
+---
+
+<BaseLayout
+  title="Applications"
+  description="Discover how Cortado contact microphones are used for acoustic instruments, foley and sound design, live sound reinforcement, field recording, and luthier work."
+  lcpImage="/images/products/mkiii-basketball-court.jpg"
+  jsonLd={faqLd ? [faqLd] : []}
+>
+  <!-- Full-width hero -->
+  <section class="relative text-white overflow-hidden">
+    <div class="absolute inset-0">
+      <Picture
+        src="/images/products/mkiii-basketball-court.jpg"
+        alt="Cortado contact microphones installed under an NBA basketball court for live sound reinforcement"
+        class="w-full h-full object-cover"
+        loading="eager"
+        fetchpriority="high"
+      />
+    </div>
+    <div class="absolute inset-0 bg-gradient-to-r from-brand-dark/90 via-brand-dark/70 to-brand-dark/40"></div>
+    <div class="relative min-h-[40vh] flex items-center">
+      <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <h1 class="text-4xl md:text-5xl font-bold mb-4">Applications</h1>
+        <p class="text-gray-200 text-lg max-w-xl">Cortado contact microphones reveal the hidden sounds lurking inside solid objects. Here are some of the ways professionals and enthusiasts put them to work.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="space-y-16">
+      <!-- Acoustic Instruments -->
+      <div id="acoustic-instruments" class="grid md:grid-cols-2 gap-8 items-center scroll-mt-24">
+        <div>
+          <h2 class="text-2xl font-bold text-brand-dark mb-4">Acoustic Instruments</h2>
+          <p class="text-gray-600 leading-relaxed mb-4">
+            Both the <a href="/products/cortado-xe/" class="text-brand-orange font-semibold hover:underline">Cortado Xe</a> and <a href="/products/cortado-mkiii/" class="text-brand-orange font-semibold hover:underline">Cortado MkIII</a> are well suited for acoustic instrument amplification. The Xe was purpose-built for this application &mdash; its compact 26mm sensor and low 11mm profile are smaller and lighter, with no separate preamp chassis to manage, making it easier to mount unobtrusively on guitars, banjos, violins, ukuleles, mandolins, cellos, harps, and upright basses. The all-steel ferrous housing enables magnet mounting for repositionable, non-adhesive attachment: move it around until you find the sweet spot, then leave it.
+          </p>
+          <p class="text-gray-600 leading-relaxed mb-4">
+            The MkIII handles acoustic instruments equally well. Its separate sensor and chassis design keeps all electronics out of the sensor housing, so the pickup itself can tolerate demanding conditions &mdash; heat, cold, and physical stress &mdash; that could damage an all-in-one unit. That makes the MkIII a strong choice when you need proven ruggedness alongside great tone on soundboards, bridges, and solid-body surfaces.
+          </p>
+          <p class="text-gray-600 leading-relaxed">
+            Both models deliver natural, full-bandwidth sound on stage and in the studio. The Xe extends high-frequency response to ~40 kHz, capturing harmonics and transient detail that condenser-based alternatives often roll off.
+          </p>
+        </div>
+        <Picture src="/images/products/xe-on-guitar.jpg" alt="Cortado Xe contact microphone mounted on an acoustic guitar near the bridge" class="aspect-video object-cover rounded-lg shadow-lg w-full" />
+      </div>
+
+      <!-- Sound Effects / Foley -->
+      <div id="foley-sound-design" class="grid md:grid-cols-2 gap-8 items-center scroll-mt-24">
+        <div class="md:order-2">
+          <h2 class="text-2xl font-bold text-brand-dark mb-4">Sound Effects / Foley / Found Sound</h2>
+          <p class="text-gray-600 leading-relaxed mb-4">
+            Cortado contact microphones reveal the hidden sounds lurking inside solid objects. Use the provided sensor putty or a spring clamp to stick it to anything and begin exploring. From creaking metal to resonating wood, the Cortado captures vibrations that air microphones simply cannot detect. ASMR and foley creators use contact mics as core tools for tactile sound capture.
+          </p>
+          <p class="text-gray-600 leading-relaxed">
+            The <a href="/products/cortado-mkiii/" class="text-brand-orange font-semibold hover:underline">Cortado MkIII</a> is especially popular for sound-design sessions thanks to its rugged sensor and wide bandwidth with bass boost.
+          </p>
+        </div>
+        <Picture src="/images/products/mkiii-washing-machine.jpg" alt="Cortado MkIII contact mic capturing vibrations on a washing machine for foley recording" class="aspect-video object-cover rounded-lg shadow-lg w-full md:order-1" />
+      </div>
+
+      <!-- Recording Studio -->
+      <div id="recording-studio" class="grid md:grid-cols-2 gap-8 items-center scroll-mt-24">
+        <div>
+          <h2 class="text-2xl font-bold text-brand-dark mb-4">Recording Studio</h2>
+          <p class="text-gray-600 leading-relaxed">
+            Cortado contact microphones can be used to mic any acoustic instrument: stick one or two mics onto the soundboard. Mic solid body instruments by attaching the sensor to any of its solid parts. The balanced output and low noise floor make it ideal for professional recording environments. Both the <a href="/products/cortado-mkiii/" class="text-brand-orange font-semibold hover:underline">MkIII</a> and <a href="/products/cortado-xe/" class="text-brand-orange font-semibold hover:underline">Xe</a> deliver full-bandwidth, balanced XLR output suitable for any pro interface or mixer. See our <a href="/video-audio/" class="text-brand-orange font-semibold hover:underline">video and audio samples</a>.
+          </p>
+        </div>
+        <Picture src="/images/products/mkiii-studio.jpg" alt="Cortado MkIII contact microphone in a professional recording studio" class="aspect-video object-cover rounded-lg shadow-lg w-full" />
+      </div>
+
+      <!-- Live Sound Reinforcement -->
+      <div id="live-sound" class="grid md:grid-cols-2 gap-8 items-center scroll-mt-24">
+        <div class="md:order-2">
+          <h2 class="text-2xl font-bold text-brand-dark mb-4">Venue Sound Reinforcement</h2>
+          <p class="text-gray-600 leading-relaxed">
+            Over 130 Cortado microphones were used under the NBA basketball courts in Orlando during the 2020 season. The Cortado has been used on football goal posts, baseball foul poles, under tap dance floors, and in countless other live sound reinforcement scenarios where traditional microphones fall short. The <a href="/products/cortado-xe/" class="text-brand-orange font-semibold hover:underline">Cortado Xe</a>'s compact form factor makes it especially suited for space-constrained installations.
+          </p>
+        </div>
+        <Picture src="/images/products/mkiii-basketball-court.jpg" alt="Cortado contact microphones under a basketball court for venue sound reinforcement" class="aspect-video object-cover rounded-lg shadow-lg w-full md:order-1" />
+      </div>
+
+      <!-- Field Recording -->
+      <div id="field-recording" class="grid md:grid-cols-2 gap-8 items-center scroll-mt-24">
+        <div>
+          <h2 class="text-2xl font-bold text-brand-dark mb-4">Field Recording &amp; Sound Design</h2>
+          <p class="text-gray-600 leading-relaxed">
+            Field recordists and sound designers use Cortado microphones to capture structural vibrations, resonances, and textures that air microphones miss entirely. From bridge cables and metal fences to tree trunks and stone walls, the <a href="/products/cortado-mkiii/" class="text-brand-orange font-semibold hover:underline">Cortado MkIII</a>'s rugged sensor and separate chassis design are built to handle demanding outdoor environments with an operating temperature range of -40&deg;F to 175&deg;F.
+          </p>
+        </div>
+        <Picture src="/images/products/mkiii-clamped.jpg" alt="Cortado MkIII clamped to a metal structure for field recording" class="aspect-video object-cover rounded-lg shadow-lg w-full" />
+      </div>
+
+      <!-- Luthier / Instrument Builder -->
+      <div id="luthiers" class="grid md:grid-cols-2 gap-8 items-center scroll-mt-24">
+        <div class="md:order-2">
+          <div class="inline-block bg-brand-orange/10 text-brand-orange font-bold text-xs uppercase tracking-wider px-3 py-1 rounded-full mb-3">Cortado Xe sweet spot</div>
+          <h2 class="text-2xl font-bold text-brand-dark mb-4">Luthiers &amp; Instrument Builders</h2>
+          <p class="text-gray-600 leading-relaxed">
+            Luthiers and instrument builders use the <a href="/products/cortado-xe/" class="text-brand-orange font-semibold hover:underline">Cortado Xe</a> to voice instruments during construction, evaluate tonal characteristics, and install permanent or semi-permanent amplification. The magnet-mountable steel housing means no adhesive residue on finished instruments &mdash; just place, listen, and reposition as needed.
+          </p>
+        </div>
+        <Picture src="/images/products/mkiii-on-amp.jpg" alt="Cortado contact microphone on a guitar amplifier cabinet" class="aspect-video object-cover rounded-lg shadow-lg w-full md:order-1" />
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <section id="faq" class="mt-20 scroll-mt-24">
+      <h2 class="text-3xl font-bold text-brand-dark mb-8 text-center">Frequently Asked Questions</h2>
+      <div class="max-w-3xl mx-auto space-y-4">
+        {faqData.map((item) => (
+          <details class="group bg-brand-light rounded-lg border border-gray-200 overflow-hidden">
+            <summary class="cursor-pointer px-6 py-4 font-bold text-brand-dark list-none flex items-center justify-between gap-4">
+              {item.question}
+              <span class="text-brand-orange text-xl shrink-0 group-open:rotate-45 transition-transform">+</span>
+            </summary>
+            <p class="px-6 pb-4 text-gray-600 leading-relaxed">{item.answer}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <div class="mt-16 bg-brand-dark text-white rounded-xl p-8 text-center">
+      <h2 class="text-2xl font-bold mb-4">Ready to explore?</h2>
+      <p class="text-gray-300 mb-6">Find the right Cortado model for your application.</p>
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="/compare/" class="bg-brand-orange text-white px-8 py-3 rounded-full font-bold hover:bg-brand-orange-light transition-colors">
+          Compare Models
+        </a>
+        <a href="/dealers/" class="border-2 border-white text-white px-8 py-3 rounded-full font-bold hover:bg-white hover:text-brand-dark transition-colors">
+          Find a Dealer
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

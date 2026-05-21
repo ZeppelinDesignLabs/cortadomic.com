@@ -1,0 +1,121 @@
+---
+import siteData from '../content/site.json';
+
+interface Props {
+  products: any[];
+}
+
+const { products } = Astro.props;
+const currentPath = Astro.url.pathname;
+---
+
+<header class="bg-brand-dark sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-20">
+      <a href="/" class="flex-shrink-0">
+        <img src="/images/logos/zeppelin-logo.png" alt={siteData.companyName} class="h-16 w-auto" />
+      </a>
+
+      <!-- Desktop nav -->
+      <nav class="hidden lg:flex items-center gap-1" aria-label="Main navigation">
+        <a href="/" class:list={["nav-link", { active: currentPath === "/" }]}>Home</a>
+
+        <div class="relative group">
+          <button class="nav-link flex items-center gap-1" aria-haspopup="true">
+            Products
+            <svg class="w-4 h-4 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <div class="absolute left-0 top-full pt-2 hidden group-hover:block">
+            <div class="bg-white rounded-lg shadow-xl border border-gray-100 py-2 min-w-48">
+              {products.map((p: any) => (
+                <a href={`/products/${p.slug}/`} class="block px-4 py-2 text-gray-700 hover:bg-brand-orange hover:text-white transition-colors">
+                  {p.name}
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <a href="/compare/" class:list={["nav-link", { active: currentPath.startsWith("/compare") }]}>Compare</a>
+        <a href="/video-audio/" class:list={["nav-link", { active: currentPath.startsWith("/video-audio") }]}>Video &amp; Audio</a>
+        <a href="/dealers/" class:list={["nav-link", { active: currentPath.startsWith("/dealers") }]}>Dealers</a>
+        <a href="/applications/" class:list={["nav-link", { active: currentPath.startsWith("/applications") }]}>Applications</a>
+        <a href="/contact/" class:list={["nav-link", { active: currentPath.startsWith("/contact") }]}>Contact</a>
+      </nav>
+
+      <!-- Mobile menu button -->
+      <button id="mobile-menu-btn" class="lg:hidden text-white p-2" aria-label="Toggle menu" aria-expanded="false">
+        <svg id="menu-icon-open" class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <svg id="menu-icon-close" class="w-8 h-8 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile nav -->
+  <div id="mobile-menu" class="lg:hidden hidden bg-brand-gray border-t border-gray-700">
+    <div class="px-4 py-3 space-y-1">
+      <a href="/" class="mobile-nav-link">Home</a>
+      <div>
+        <button id="mobile-products-btn" class="mobile-nav-link w-full text-left flex items-center justify-between">
+          Products
+          <svg class="w-4 h-4 transition-transform" id="mobile-products-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        <div id="mobile-products-list" class="hidden pl-4 space-y-1 mt-1">
+          {products.map((p: any) => (
+            <a href={`/products/${p.slug}/`} class="mobile-nav-link block text-sm">{p.name}</a>
+          ))}
+        </div>
+      </div>
+      <a href="/compare/" class="mobile-nav-link">Compare</a>
+      <a href="/video-audio/" class="mobile-nav-link">Video &amp; Audio</a>
+      <a href="/dealers/" class="mobile-nav-link">Dealers</a>
+      <a href="/applications/" class="mobile-nav-link">Applications</a>
+      <a href="/contact/" class="mobile-nav-link">Contact</a>
+    </div>
+  </div>
+</header>
+
+<style>
+  @reference "../styles/global.css";
+
+  .nav-link {
+    @apply px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-md transition-colors;
+  }
+  .nav-link.active {
+    @apply text-brand-orange;
+  }
+  .mobile-nav-link {
+    @apply block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-md transition-colors;
+  }
+</style>
+
+<script is:inline>
+  const btn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  const iconOpen = document.getElementById('menu-icon-open');
+  const iconClose = document.getElementById('menu-icon-close');
+  const productsBtn = document.getElementById('mobile-products-btn');
+  const productsList = document.getElementById('mobile-products-list');
+  const productsArrow = document.getElementById('mobile-products-arrow');
+
+  btn?.addEventListener('click', () => {
+    const expanded = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!expanded));
+    menu?.classList.toggle('hidden');
+    iconOpen?.classList.toggle('hidden');
+    iconClose?.classList.toggle('hidden');
+  });
+
+  productsBtn?.addEventListener('click', () => {
+    productsList?.classList.toggle('hidden');
+    productsArrow?.classList.toggle('rotate-180');
+  });
+</script>

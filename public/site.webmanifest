@@ -1,0 +1,26 @@
+{
+  "name": "Cortado Mic",
+  "short_name": "Cortado",
+  "description": "Contact Microphones by Zeppelin Design Labs",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#e8731a",
+  "theme_color": "#e8731a",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "32x32",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

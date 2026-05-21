@@ -1,0 +1,167 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import siteData from '../content/site.json';
+
+const formConfig = siteData.contactForm;
+const accessKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY ?? '';
+const formConfigured = Boolean(accessKey);
+---
+
+<BaseLayout title="Contact" description="Contact Zeppelin Design Labs in Naperville, IL about Cortado contact microphones — product support, dealer inquiries, custom installations, and general questions.">
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <h1 class="text-4xl font-bold text-brand-dark mb-4">Get In Touch</h1>
+    <p class="text-gray-600 text-lg mb-12">
+      Interested in becoming a Cortado dealer? Have questions about our microphones? We'd love to hear from you.
+    </p>
+
+    <div class="grid md:grid-cols-2 gap-12">
+      <div>
+        <h2 class="text-2xl font-bold text-brand-dark mb-6">Send a Message</h2>
+
+        {!formConfigured && (
+          <p class="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+            Contact form is not configured yet. Copy <code class="text-xs">.env.example</code> to <code class="text-xs">.env</code> and add your Web3Forms access key, or set the <code class="text-xs">WEB3FORMS_ACCESS_KEY</code> GitHub Actions secret for production builds.
+          </p>
+        )}
+
+        <div id="contact-form-success" class="hidden mb-4 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-green-900" role="status">
+          Thanks for reaching out. We'll get back to you soon.
+        </div>
+        <div id="contact-form-error" class="hidden mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-900" role="alert">
+          Something went wrong sending your message. Please email us directly at{' '}
+          <a href={`mailto:${siteData.contactEmail}`} class="font-bold underline">{siteData.contactEmail}</a>.
+        </div>
+
+        <form id="contact-form" class="space-y-4">
+          <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+          <div>
+            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              required
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-orange focus:border-transparent outline-none"
+              placeholder="Your name"
+            />
+          </div>
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-orange focus:border-transparent outline-none"
+              placeholder="your@email.com"
+            />
+          </div>
+          <div>
+            <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+            <textarea
+              id="message"
+              name="message"
+              rows="5"
+              required
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-orange focus:border-transparent outline-none resize-y"
+              placeholder="How can we help?"
+            ></textarea>
+          </div>
+          <button
+            type="submit"
+            id="contact-form-submit"
+            disabled={!formConfigured}
+            class="bg-brand-orange text-white px-8 py-3 rounded-full font-bold hover:bg-brand-orange-light transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Send Message
+          </button>
+        </form>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-bold text-brand-dark mb-6">Contact Information</h2>
+        <div class="space-y-6">
+          <div class="flex items-start gap-4">
+            <svg class="w-6 h-6 text-brand-orange flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <div>
+              <h3 class="font-bold text-brand-dark">Lab Location</h3>
+              <p class="text-gray-600">{siteData.address}</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4">
+            <svg class="w-6 h-6 text-brand-orange flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+            <div>
+              <h3 class="font-bold text-brand-dark">Email</h3>
+              <a href={`mailto:${siteData.contactEmail}`} class="text-brand-orange hover:underline">
+                {siteData.contactEmail}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script define:vars={{ accessKey, formEndpoint: formConfig.endpoint, contactEmail: siteData.contactEmail }}>
+  const form = document.getElementById('contact-form');
+  const submitBtn = document.getElementById('contact-form-submit');
+  const successEl = document.getElementById('contact-form-success');
+  const errorEl = document.getElementById('contact-form-error');
+
+  if (!form || !accessKey) return;
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    successEl?.classList.add('hidden');
+    errorEl?.classList.add('hidden');
+
+    const formData = new FormData(form);
+    const defaultLabel = submitBtn?.textContent ?? 'Send Message';
+
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending…';
+    }
+
+    try {
+      const response = await fetch(formEndpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: accessKey,
+          name: formData.get('name'),
+          email: formData.get('email'),
+          message: formData.get('message'),
+          subject: 'Cortado Mic — contact form',
+          from_name: 'Cortado Mic Website',
+          botcheck: formData.get('botcheck'),
+        }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        form.reset();
+        successEl?.classList.remove('hidden');
+      } else {
+        throw new Error(result.message || 'Submission failed');
+      }
+    } catch {
+      errorEl?.classList.remove('hidden');
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = defaultLabel;
+      }
+    }
+  });
+</script>

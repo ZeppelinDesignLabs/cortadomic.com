@@ -1,0 +1,27 @@
+{
+  "name": "cortadomic",
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "optimize:images": "node scripts/optimize-images.mjs",
+    "generate:favicons": "node scripts/generate-favicons.mjs",
+    "generate:og": "node scripts/generate-og-images.mjs",
+    "generate:dimensions": "node scripts/generate-image-dimensions.mjs"
+  },
+  "dependencies": {
+    "@astrojs/rss": "^4.0.15",
+    "@astrojs/sitemap": "^3.7.2",
+    "@tailwindcss/vite": "^4.2.2",
+    "astro": "^6.1.5",
+    "tailwindcss": "^4.2.2"
+  },
+  "overrides": {
+    "vite": "^7.3.1"
+  },
+  "devDependencies": {
+    "to-ico": "^1.1.5"
+  }
+}

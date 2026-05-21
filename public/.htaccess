@@ -1,0 +1,10 @@
+# Legacy URL redirects (old WordPress paths and PDFs)
+RewriteEngine On
+
+RewriteRule ^home/?$ / [R=301,L]
+RewriteRule ^spec-and-documents/?$ /compare/ [R=301,L]
+RewriteRule ^specifications-and-documentation/?$ /compare/ [R=301,L]
+
+RewriteRule ^wp-content/uploads/2021/04/CORTADO-MKIII-DATASHEET\.pdf$ /docs/cortado-mkiii-datasheet.pdf [R=301,L]
+RewriteRule ^wp-content/uploads/2025/08/CORTADO-MKIII-OWNERS-GUIDE\.pdf$ /docs/cortado-mkiii-owners-guide.pdf [R=301,L]
+RewriteRule ^wp-content/uploads/2021/04/Cortado-MkIII-Contact-Microphone-Dimensions-1\.pdf$ /docs/cortado-mkiii-dimensions.pdf [R=301,L]

@@ -1,0 +1,34 @@
+[
+  {
+    "question": "What is a contact microphone?",
+    "answer": "A contact microphone (or piezo pickup) senses vibrations traveling through solid materials rather than sound waves in the air. When attached to a guitar, metal surface, or structure, it captures the object's resonant character — often revealing tones and textures that conventional air mics miss."
+  },
+  {
+    "question": "Do Cortado microphones need phantom power?",
+    "answer": "Yes. Both the Cortado MkIII and Cortado Xe require 24–48V phantom power from a standard XLR microphone input on a mixer, interface, or preamp. No batteries or external power supply are needed."
+  },
+  {
+    "question": "What is the difference between the Cortado Xe and MkIII?",
+    "answer": "The Cortado Xe is an all-in-one design: sensor, preamp, and cable in a compact 26mm housing — ideal for acoustic instruments and magnet mounting. The Cortado MkIII uses a separate rugged steel chassis with switchable pad and bass boost, better suited for demanding environments, long cable runs, and installations where the electronics should stay away from the sensor."
+  },
+  {
+    "question": "Can I mount a Cortado on an acoustic guitar?",
+    "answer": "Yes. Both models work well on soundboards, bridges, and solid-body surfaces. The Xe's low profile and magnet-mountable steel housing make repositioning easy without adhesive residue. The MkIII's separate sensor tolerates heat and physical stress on demanding surfaces."
+  },
+  {
+    "question": "Where can I buy a Cortado contact microphone?",
+    "answer": "Cortado microphones are sold through authorized dealers worldwide. Visit the Dealers page on cortadomic.com to find a retailer in your region, or contact Zeppelin Design Labs directly for dealer inquiries."
+  },
+  {
+    "question": "Are Cortado mics good for foley and sound design?",
+    "answer": "Contact mics are a staple tool for foley artists and sound designers. Cortado pickups capture structural vibrations — metal, wood, glass, machinery — that air microphones cannot. Use mounting putty, clamps, or magnets to explore resonances in everyday objects."
+  },
+  {
+    "question": "What frequency response do Cortado mics offer?",
+    "answer": "The Cortado MkIII reaches approximately 23 Hz to 40 kHz with bass boost enabled. The Cortado Xe covers approximately 40 Hz to 40 kHz. Both deliver balanced XLR output suitable for professional recording and live sound."
+  },
+  {
+    "question": "Does Zeppelin Design Labs offer a warranty?",
+    "answer": "The Cortado Xe includes a 1-year limited warranty. The Cortado MkIII is backed by Zeppelin Design Labs' standard product warranty. Contact info@zeppelindesignlabs.com for support or warranty questions."
+  }
+]

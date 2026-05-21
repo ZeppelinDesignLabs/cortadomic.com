@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import dealerData from '../content/dealers.json';
+---
+
+<BaseLayout title="Dealers" description="Find authorized Cortado contact microphone dealers in the US, Canada, Europe, and worldwide. Browse our retail partners to purchase the Cortado Xe or MkIII.">
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <h1 class="text-4xl font-bold text-brand-dark mb-4">Dealers</h1>
+    <p class="text-gray-600 text-lg mb-12">Find a Cortado contact microphone dealer near you. Contact any dealer to inquire about availability.</p>
+
+    <div class="space-y-12">
+      {dealerData.regions.map((region) => (
+        <div>
+          <h2 class="text-2xl font-bold text-brand-dark mb-6 pb-2 border-b-2 border-brand-orange">{region.name}</h2>
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {region.dealers.map((dealer) => (
+              <div class="bg-white p-5 rounded-lg shadow hover:shadow-lg transition-shadow">
+                <h3 class="font-bold text-lg text-brand-dark">{dealer.name}</h3>
+                <p class="text-gray-600 text-sm mb-2">{dealer.location}</p>
+                <a href={dealer.url} class="text-brand-orange hover:underline text-sm font-medium" target="_blank" rel="noopener">
+                  {dealer.url.replace('https://', '')}
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
