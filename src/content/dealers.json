@@ -26,7 +26,8 @@
         { "name": "Escape From Noise", "location": "Stockholm, Sweden", "url": "https://www.escapefromnoise.com" },
         { "name": "Floating Point Audio", "location": "Paris, France", "url": "https://www.floatingpoint.audio" },
         { "name": "Matrix Pro Audio AS", "location": "Rykkinn, Norway", "url": "https://www.matrixproaudio.no" },
-        { "name": "Nordic Pro Group", "location": "Glücksburg, Germany", "url": "https://www.nordicpro.eu" }
+        { "name": "Nordic Pro Group", "location": "Glücksburg, Germany", "url": "https://www.nordicpro.eu" },
+        { "name": "Zeigermann Audio", "location": "Hamburg, Germany", "url": "https://www.zeigermann-audio.de" }
       ]
     },
     {
