@@ -1,0 +1,153 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Picture from '../components/Picture.astro';
+import siteData from '../content/site.json';
+
+const form = siteData.submissionForm;
+const embedUrl = form?.embedUrl ?? '';
+const formConfigured = Boolean(embedUrl);
+const fallbackEmail = form?.fallbackEmail ?? siteData.contactEmail;
+---
+
+<BaseLayout
+  title="Share Your Cortado Story"
+  description="How do you use your Cortado contact mic? Tell us and show us — send your story, photos, and video. We publish our favorites and send a free Zeppelin Design Labs T-shirt to everyone we feature."
+  ogImage="/images/og/og-xe.jpg"
+>
+  <!-- ===== HERO ===== -->
+  <section class="relative text-white overflow-hidden bg-brand-dark">
+    <div class="absolute inset-0">
+      <Picture
+        src="/images/products/xe-on-guitar.jpg"
+        alt="Cortado Xe contact microphone mounted on an acoustic guitar"
+        class="w-full h-full object-cover opacity-30"
+        loading="eager"
+        fetchpriority="high"
+      />
+    </div>
+    <div class="absolute inset-0 bg-gradient-to-r from-brand-dark via-brand-dark/85 to-brand-dark/50"></div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-24">
+      <p class="text-brand-orange font-bold text-sm uppercase tracking-widest mb-3">Caught on Cortado</p>
+      <h1 class="text-4xl md:text-5xl font-bold mb-5 max-w-3xl">How do you use your Cortado?</h1>
+      <p class="text-gray-200 text-lg max-w-2xl mb-8">
+        Cortado players are an inventive bunch &mdash; sticking these mics on guitars, banjos, machines,
+        bridges, ice, and places we never imagined. We want to hear about it. Send us your story and any
+        photos or video, and you could be featured on our site and channels.
+      </p>
+      <div class="inline-flex items-center gap-3 bg-brand-orange/15 border border-brand-orange/40 rounded-full pl-4 pr-5 py-2">
+        <span class="text-2xl" aria-hidden="true">&#128085;</span>
+        <span class="text-sm md:text-base font-semibold text-white">Every story we feature gets a free Zeppelin Design Labs T-shirt.</span>
+      </div>
+      <div class="mt-8">
+        <a href="#share" class="inline-block bg-brand-orange text-white px-8 py-3 rounded-full font-bold hover:bg-brand-orange-light transition-colors">
+          Share your story &darr;
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== HOW IT WORKS ===== -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <h2 class="text-3xl font-bold text-brand-dark mb-10 text-center">How it works</h2>
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="bg-white rounded-xl p-6 shadow-md border-t-4 border-brand-orange">
+        <div class="text-brand-orange font-bold text-3xl mb-3">1</div>
+        <h3 class="text-xl font-bold text-brand-dark mb-2">Tell your story</h3>
+        <p class="text-gray-600 leading-relaxed">
+          Fill out the short form below. Whether you run a Cortado MkII, MkIII, or the new Xe, tell us how and
+          where you put it to work &mdash; the more creative or surprising, the better.
+        </p>
+      </div>
+      <div class="bg-white rounded-xl p-6 shadow-md border-t-4 border-brand-orange">
+        <div class="text-brand-orange font-bold text-3xl mb-3">2</div>
+        <h3 class="text-xl font-bold text-brand-dark mb-2">Show us</h3>
+        <p class="text-gray-600 leading-relaxed">
+          Add photos, video, or audio. You can upload files directly, or paste a link to anything that lives
+          on YouTube, Vimeo, Google Drive, Dropbox, or WeTransfer.
+        </p>
+      </div>
+      <div class="bg-white rounded-xl p-6 shadow-md border-t-4 border-brand-orange">
+        <div class="text-brand-orange font-bold text-3xl mb-3">3</div>
+        <h3 class="text-xl font-bold text-brand-dark mb-2">Get featured</h3>
+        <p class="text-gray-600 leading-relaxed">
+          We'll publish our favorites on cortadomic.com and our social channels &mdash; and send a free Zeppelin
+          Design Labs T-shirt to everyone whose story we feature.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== IDEAS ===== -->
+  <section class="bg-brand-light">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <h2 class="text-3xl font-bold text-brand-dark mb-4 text-center">Not sure what to share?</h2>
+      <p class="text-gray-600 text-center max-w-2xl mx-auto mb-10">
+        There's no wrong answer. A few things we'd love to see:
+      </p>
+      <div class="grid sm:grid-cols-2 gap-x-10 gap-y-4 max-w-3xl mx-auto">
+        <div class="flex items-start gap-3"><span class="text-brand-orange font-bold mt-0.5">&#10003;</span><p class="text-gray-700">The instrument or object you mic, and where you place the sensor</p></div>
+        <div class="flex items-start gap-3"><span class="text-brand-orange font-bold mt-0.5">&#10003;</span><p class="text-gray-700">A recording, performance, or sound-design clip you captured</p></div>
+        <div class="flex items-start gap-3"><span class="text-brand-orange font-bold mt-0.5">&#10003;</span><p class="text-gray-700">An unusual or unexpected application no one would guess</p></div>
+        <div class="flex items-start gap-3"><span class="text-brand-orange font-bold mt-0.5">&#10003;</span><p class="text-gray-700">Your mounting trick, rig, or setup photo</p></div>
+        <div class="flex items-start gap-3"><span class="text-brand-orange font-bold mt-0.5">&#10003;</span><p class="text-gray-700">Live sound, field recording, foley, ASMR, or studio use</p></div>
+        <div class="flex items-start gap-3"><span class="text-brand-orange font-bold mt-0.5">&#10003;</span><p class="text-gray-700">Why the Cortado earned a permanent place in your kit</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== THE FORM ===== -->
+  <section id="share" class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 scroll-mt-24">
+    <h2 class="text-3xl font-bold text-brand-dark mb-3 text-center">Share your story</h2>
+    <p class="text-gray-600 text-center mb-8">Takes about two minutes. Photos and video are welcome but not required.</p>
+
+    {formConfigured ? (
+      <div>
+        <iframe
+          data-tally-src={`${embedUrl}${embedUrl.includes('?') ? '&' : '?'}alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1`}
+          loading="lazy"
+          width="100%"
+          height="1100"
+          frameborder="0"
+          marginheight="0"
+          marginwidth="0"
+          title="Share your Cortado story"
+        ></iframe>
+      </div>
+    ) : (
+      <div class="rounded-xl border border-amber-200 bg-amber-50 px-6 py-6 text-amber-900">
+        <p class="font-bold mb-2">Submission form not connected yet.</p>
+        <p class="text-sm leading-relaxed">
+          Create the form at <a href="https://tally.so" class="font-bold underline">tally.so</a>, then paste its
+          embed URL into <code class="text-xs">src/content/site.json</code> &rarr; <code class="text-xs">submissionForm.embedUrl</code>
+          (for example <code class="text-xs">https://tally.so/embed/xxxxxx</code>) and rebuild. Until then, you can email your
+          story and media to <a href={`mailto:${fallbackEmail}`} class="font-bold underline">{fallbackEmail}</a>.
+        </p>
+      </div>
+    )}
+
+    <p class="text-xs text-gray-500 leading-relaxed mt-6">
+      By submitting, you grant Zeppelin Design Labs permission to publish and share your story and any
+      media you provide &mdash; on cortadomic.com, zeppelindesignlabs.com, and our social channels &mdash; with
+      credit where you've asked for it. You confirm the content is yours to share. We'll only contact you about
+      your submission and your T-shirt. Featured-story T-shirts ship free; one per person.
+    </p>
+  </section>
+
+  <!-- ===== CTA ===== -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+    <div class="bg-brand-dark text-white rounded-xl p-8 text-center">
+      <h2 class="text-2xl font-bold mb-3">New to the Cortado family?</h2>
+      <p class="text-gray-300 mb-6">Meet the all-new Cortado Xe &mdash; our most compact pro contact mic yet.</p>
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="/products/cortado-xe/" class="bg-brand-orange text-white px-8 py-3 rounded-full font-bold hover:bg-brand-orange-light transition-colors">
+          See the Cortado Xe
+        </a>
+        <a href="/compare/" class="border-2 border-white text-white px-8 py-3 rounded-full font-bold hover:bg-white hover:text-brand-dark transition-colors">
+          Compare Models
+        </a>
+      </div>
+    </div>
+  </section>
+
+  {formConfigured && <script is:inline src="https://tally.so/widgets/embed.js"></script>}
+</BaseLayout>

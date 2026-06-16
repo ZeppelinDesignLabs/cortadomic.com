@@ -24,6 +24,14 @@
     "envVar": "PUBLIC_WEB3FORMS_ACCESS_KEY",
     "githubSecret": "WEB3FORMS_ACCESS_KEY"
   },
+  "submissionForm": {
+    "provider": "Tally",
+    "providerUrl": "https://tally.so",
+    "embedUrl": "https://tally.so/embed/VLxWYl",
+    "fallbackEmail": "info@zeppelindesignlabs.com",
+    "campaign": "Caught on Cortado",
+    "reward": "A free Zeppelin Design Labs T-shirt for every story we feature"
+  },
   "address": "31w154 91st St, Unit #113, Naperville, IL 60564 USA",
   "copyright": "2026 Zeppelin Design Labs",
   "chatwayWidgetId": "kRCxJ6qGDA01",
