@@ -1,0 +1,154 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import GalleryLightbox from '../../components/GalleryLightbox.astro';
+import { getCollection, render } from 'astro:content';
+import { buildVideoObjectJsonLd } from '../../lib/seo';
+import siteData from '../../content/site.json';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('submissions');
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+const siteUrl = siteData.siteUrl;
+const storyUrl = `${siteUrl}/stories/${entry.id}/`;
+
+const galleryImages = d.images.map((img) => img.src);
+const galleryAlts = d.images.map((img) => img.alt);
+
+const hasVideo = Boolean(d.video && (d.video.embedId || d.video.src));
+const byline = [d.author, d.location].filter(Boolean).join(' · ');
+
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: d.title,
+  description: d.summary,
+  datePublished: d.pubDate.toISOString(),
+  author: { '@type': 'Person', name: d.author },
+  publisher: {
+    '@type': 'Organization',
+    name: siteData.companyName,
+    logo: { '@type': 'ImageObject', url: `${siteUrl}/images/logos/zeppelin-logo.png` },
+  },
+  mainEntityOfPage: storyUrl,
+  image: `${siteUrl}${d.coverImage}`,
+};
+
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl },
+    { '@type': 'ListItem', position: 2, name: 'Caught on Cortado', item: `${siteUrl}/stories/` },
+    { '@type': 'ListItem', position: 3, name: d.title, item: storyUrl },
+  ],
+};
+
+const baseVideoLd = d.video?.embedId
+  ? buildVideoObjectJsonLd({ title: d.video.title || d.title, embedId: d.video.embedId }, storyUrl)
+  : null;
+const videoLd = baseVideoLd
+  ? { ...baseVideoLd, description: d.summary, uploadDate: d.pubDate.toISOString() }
+  : null;
+
+const jsonLd = [articleLd, breadcrumbLd, ...(videoLd ? [videoLd] : [])];
+---
+
+<BaseLayout
+  title={d.title}
+  description={d.summary}
+  canonicalPath={`/stories/${entry.id}/`}
+  ogImage={d.coverImage}
+  ogType="article"
+  lcpImage={hasVideo ? undefined : d.coverImage}
+  preconnectYoutube={hasVideo && Boolean(d.video?.embedId)}
+  jsonLd={jsonLd}
+>
+  <article class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <p class="text-sm text-gray-500 mb-4">
+      <a href="/stories/" class="text-brand-orange font-semibold hover:underline">&larr; All stories</a>
+    </p>
+
+    <header class="mb-8">
+      <p class="text-brand-orange font-bold text-sm uppercase tracking-widest mb-3">Caught on Cortado</p>
+      <h1 class="text-4xl font-bold text-brand-dark mb-4">{d.title}</h1>
+      <p class="text-gray-700 font-semibold">{byline}</p>
+      {d.authorTitle && <p class="text-gray-500 text-sm">{d.authorTitle}</p>}
+    </header>
+
+    {hasVideo ? (
+      <div class="aspect-video bg-gray-100 rounded-xl overflow-hidden shadow-lg mb-10">
+        {d.video?.embedId ? (
+          <iframe
+            src={`https://www.youtube.com/embed/${d.video.embedId}?rel=0`}
+            title={d.video?.title || d.title}
+            class="w-full h-full"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            loading="lazy"
+          />
+        ) : (
+          <video
+            class="w-full h-full object-contain bg-black"
+            src={d.video?.src}
+            poster={d.video?.poster}
+            controls
+            preload="metadata"
+          />
+        )}
+      </div>
+    ) : (
+      <img
+        src={d.coverImage}
+        alt={d.coverAlt || d.title}
+        class="w-full rounded-xl shadow-lg mb-10 object-cover max-h-[420px]"
+        loading="eager"
+      />
+    )}
+
+    <div class="prose prose-lg max-w-none prose-headings:text-brand-dark prose-a:text-brand-orange">
+      <Content />
+    </div>
+
+    {d.images.length > 0 && (
+      <div class="mt-12">
+        <h2 class="text-2xl font-bold text-brand-dark mb-6">Photos &amp; data</h2>
+        <GalleryLightbox images={galleryImages} altPrefix={d.title} imageAlts={galleryAlts} />
+      </div>
+    )}
+  </article>
+
+  <!-- CTA -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+    <div class="bg-brand-dark text-white rounded-xl p-8 text-center">
+      <h2 class="text-2xl font-bold mb-3">How do you use your Cortado?</h2>
+      <p class="text-gray-300 mb-6">Share your story and you could be featured here &mdash; every featured story gets a free Zeppelin Design Labs T-shirt.</p>
+      <a href="/share-your-cortado/" class="inline-block bg-brand-orange text-white px-8 py-3 rounded-full font-bold hover:bg-brand-orange-light transition-colors">
+        Share your story
+      </a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  @reference "../../styles/global.css";
+  .prose :global(h2) {
+    @apply text-2xl font-bold mt-10 mb-4;
+  }
+  .prose :global(p) {
+    @apply text-gray-600 leading-relaxed mb-4;
+  }
+  .prose :global(ul) {
+    @apply list-disc pl-6 mb-4 text-gray-600 space-y-2;
+  }
+  .prose :global(strong) {
+    @apply text-brand-dark;
+  }
+</style>

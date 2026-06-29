@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Picture from '../../components/Picture.astro';
 import GalleryLightbox from '../../components/GalleryLightbox.astro';
+import CaughtOnCortadoCTA from '../../components/CaughtOnCortadoCTA.astro';
 import siteData from '../../content/site.json';
 import { buildVideoListJsonLd, productMerchantExtras } from '../../lib/seo';
 import fs from 'node:fs';
@@ -238,5 +239,13 @@ const breadcrumbLd = {
       </div>
     </section>
   )}
+
+  <!-- Caught on Cortado -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <CaughtOnCortadoCTA
+      heading={`How will you use your ${product.shortName || product.name}?`}
+      blurb="See real-world stories from the Cortado community — instruments, machines, and the unexpected — then share yours for a free Zeppelin Design Labs T-shirt."
+    />
+  </section>
 
 </BaseLayout>

@@ -1,12 +1,23 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Picture from '../components/Picture.astro';
+import SubmissionCarousel from '../components/SubmissionCarousel.astro';
 import siteData from '../content/site.json';
+import { getCollection } from 'astro:content';
 
 const form = siteData.submissionForm;
 const embedUrl = form?.embedUrl ?? '';
 const formConfigured = Boolean(embedUrl);
 const fallbackEmail = form?.fallbackEmail ?? siteData.contactEmail;
+
+const featuredStories = (await getCollection('submissions'))
+  .filter((s) => s.data.featured)
+  .sort((a, b) => {
+    const order = (a.data.order ?? 0) - (b.data.order ?? 0);
+    if (order !== 0) return order;
+    return b.data.pubDate.getTime() - a.data.pubDate.getTime();
+  })
+  .map((s) => ({ id: s.id, data: s.data }));
 ---
 
 <BaseLayout
@@ -76,6 +87,9 @@ const fallbackEmail = form?.fallbackEmail ?? siteData.contactEmail;
       </div>
     </div>
   </section>
+
+  <!-- ===== FEATURED STORIES ===== -->
+  <SubmissionCarousel submissions={featuredStories} />
 
   <!-- ===== IDEAS ===== -->
   <section class="bg-brand-light">

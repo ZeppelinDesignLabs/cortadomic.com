@@ -122,5 +122,29 @@
   "/images/products/xe-sensor-closeup.jpg": {
     "width": 2000,
     "height": 3552
+  },
+  "/images/submissions/rick-porsche/cortado-on-engine.jpg": {
+    "width": 2000,
+    "height": 1500
+  },
+  "/images/submissions/rick-porsche/cortado-with-magnet.jpg": {
+    "width": 2000,
+    "height": 2667
+  },
+  "/images/submissions/rick-porsche/engine-tick-phase-plot.png": {
+    "width": 1357,
+    "height": 1161
+  },
+  "/images/submissions/rick-porsche/event-separation.png": {
+    "width": 1770,
+    "height": 1142
+  },
+  "/images/submissions/rick-porsche/exhaust-phase-plot.png": {
+    "width": 1360,
+    "height": 1161
+  },
+  "/images/zdl-tshirt.jpg": {
+    "width": 680,
+    "height": 510
   }
 }

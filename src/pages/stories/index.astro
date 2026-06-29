@@ -1,0 +1,102 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Picture from '../../components/Picture.astro';
+import siteData from '../../content/site.json';
+import { getCollection } from 'astro:content';
+
+const entries = (await getCollection('submissions')).sort((a, b) => {
+  const order = (a.data.order ?? 0) - (b.data.order ?? 0);
+  if (order !== 0) return order;
+  return b.data.pubDate.getTime() - a.data.pubDate.getTime();
+});
+
+const siteUrl = siteData.siteUrl;
+const collectionLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'Caught on Cortado — Stories',
+  description: 'Real-world Cortado contact microphone stories from our community.',
+  url: `${siteUrl}/stories/`,
+  mainEntity: {
+    '@type': 'ItemList',
+    itemListElement: entries.map((s, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      url: `${siteUrl}/stories/${s.id}/`,
+      name: s.data.title,
+    })),
+  },
+};
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl },
+    { '@type': 'ListItem', position: 2, name: 'Caught on Cortado', item: `${siteUrl}/stories/` },
+  ],
+};
+---
+
+<BaseLayout
+  title="Caught on Cortado — Stories"
+  description="Real-world Cortado contact microphone stories from our community — from acoustic instruments to engines, machines, and the unexpected."
+  canonicalPath="/stories/"
+  ogImage={entries[0]?.data.coverImage}
+  jsonLd={[collectionLd, breadcrumbLd]}
+>
+  <section class="bg-brand-light">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <p class="text-brand-orange font-bold text-sm uppercase tracking-widest mb-3">Caught on Cortado</p>
+      <h1 class="text-4xl font-bold text-brand-dark mb-4">Stories from the Cortado community</h1>
+      <p class="text-gray-600 text-lg max-w-2xl">
+        The inventive, surprising, and downright clever ways people put a Cortado to work. Got one of your own?
+        <a href="/share-your-cortado/" class="text-brand-orange font-semibold hover:underline">Share your story</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    {entries.length === 0 ? (
+      <div class="text-center py-16 text-gray-400">
+        <p class="text-xl">Stories coming soon &mdash; be the first to <a href="/share-your-cortado/" class="text-brand-orange font-semibold hover:underline">share yours</a>.</p>
+      </div>
+    ) : (
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {entries.map((s) => (
+          <a
+            href={`/stories/${s.id}/`}
+            class="group flex flex-col h-full bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl border border-gray-100 transition-shadow"
+          >
+            <div class="relative aspect-[4/3] bg-gray-100 overflow-hidden">
+              <Picture
+                src={s.data.coverImage}
+                alt={s.data.coverAlt || s.data.title}
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              />
+              {(s.data.video?.embedId || s.data.video?.src) && (
+                <span class="absolute top-3 left-3 inline-flex items-center gap-1 bg-black/70 text-white text-xs font-semibold px-2.5 py-1 rounded-full">
+                  <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+                  Video
+                </span>
+              )}
+              {s.data.model && (
+                <span class="absolute top-3 right-3 bg-brand-orange text-white text-xs font-bold px-2.5 py-1 rounded-full">{s.data.model}</span>
+              )}
+            </div>
+            <div class="flex flex-col flex-1 p-5">
+              <h2 class="text-lg font-bold text-brand-dark leading-snug group-hover:text-brand-orange transition-colors">{s.data.title}</h2>
+              <p class="text-sm text-gray-500 mt-1">
+                {s.data.author}{s.data.location ? ` · ${s.data.location}` : ''}
+              </p>
+              <p class="text-gray-600 text-sm mt-3 flex-1">{s.data.summary}</p>
+              <span class="mt-4 inline-flex items-center gap-1 text-brand-orange font-bold text-sm">
+                Read the story
+                <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+              </span>
+            </div>
+          </a>
+        ))}
+      </div>
+    )}
+  </section>
+</BaseLayout>

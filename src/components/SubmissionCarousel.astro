@@ -1,0 +1,149 @@
+---
+import Picture from './Picture.astro';
+
+interface SubmissionItem {
+  id: string;
+  data: {
+    title: string;
+    author: string;
+    authorTitle?: string;
+    location?: string;
+    model?: string;
+    summary: string;
+    coverImage: string;
+    coverAlt?: string;
+    video?: { embedId?: string; src?: string };
+  };
+}
+
+interface Props {
+  submissions: SubmissionItem[];
+  heading?: string;
+  intro?: string;
+}
+
+const {
+  submissions,
+  heading = 'Caught on Cortado: featured stories',
+  intro = 'Real Cortado players, real-world setups. Here are a few of our favorites.',
+} = Astro.props;
+
+const carouselId = `carousel-${crypto.randomUUID().slice(0, 8)}`;
+const showControls = submissions.length > 1;
+---
+
+{submissions.length > 0 && (
+  <section class="bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
+        <div>
+          <p class="text-brand-orange font-bold text-sm uppercase tracking-widest mb-2">Caught on Cortado</p>
+          <h2 class="text-3xl font-bold text-brand-dark">{heading}</h2>
+          <p class="text-gray-600 mt-2 max-w-2xl">{intro}</p>
+        </div>
+        {showControls && (
+          <div class="hidden md:flex gap-2 shrink-0">
+            <button
+              type="button"
+              class="carousel-prev w-11 h-11 rounded-full border-2 border-gray-300 text-brand-dark flex items-center justify-center hover:border-brand-orange hover:text-brand-orange transition-colors"
+              aria-label="Previous story"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+            </button>
+            <button
+              type="button"
+              class="carousel-next w-11 h-11 rounded-full border-2 border-gray-300 text-brand-dark flex items-center justify-center hover:border-brand-orange hover:text-brand-orange transition-colors"
+              aria-label="Next story"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+            </button>
+          </div>
+        )}
+      </div>
+
+      <div
+        class="submission-carousel"
+        data-carousel-id={carouselId}
+      >
+        <ul class="carousel-track flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 -mx-1 px-1 list-none">
+          {submissions.map((s) => (
+            <li class="carousel-slide snap-start shrink-0 w-[85%] sm:w-[20rem] lg:w-[22rem]">
+              <a
+                href={`/stories/${s.id}/`}
+                class="group flex flex-col h-full bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl border border-gray-100 transition-shadow"
+              >
+                <div class="relative aspect-[4/3] bg-gray-100 overflow-hidden">
+                  <Picture
+                    src={s.data.coverImage}
+                    alt={s.data.coverAlt || s.data.title}
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  {(s.data.video?.embedId || s.data.video?.src) && (
+                    <span class="absolute top-3 left-3 inline-flex items-center gap-1 bg-black/70 text-white text-xs font-semibold px-2.5 py-1 rounded-full">
+                      <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+                      Video
+                    </span>
+                  )}
+                  {s.data.model && (
+                    <span class="absolute top-3 right-3 bg-brand-orange text-white text-xs font-bold px-2.5 py-1 rounded-full">{s.data.model}</span>
+                  )}
+                </div>
+                <div class="flex flex-col flex-1 p-5">
+                  <h3 class="text-lg font-bold text-brand-dark leading-snug group-hover:text-brand-orange transition-colors">{s.data.title}</h3>
+                  <p class="text-sm text-gray-500 mt-1">
+                    {s.data.author}{s.data.location ? ` · ${s.data.location}` : ''}
+                  </p>
+                  <p class="text-gray-600 text-sm mt-3 line-clamp-3 flex-1">{s.data.summary}</p>
+                  <span class="mt-4 inline-flex items-center gap-1 text-brand-orange font-bold text-sm">
+                    Read the story
+                    <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                  </span>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+)}
+
+<style>
+  @reference "../styles/global.css";
+  .carousel-track {
+    scrollbar-width: none;
+  }
+  .carousel-track::-webkit-scrollbar {
+    display: none;
+  }
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>
+
+{showControls && (
+  <script is:inline>
+    (function () {
+      document.querySelectorAll('.submission-carousel').forEach((root) => {
+        if (root.dataset.carouselInit) return;
+        root.dataset.carouselInit = 'true';
+        const track = root.querySelector('.carousel-track');
+        const section = root.closest('section');
+        const prev = section && section.querySelector('.carousel-prev');
+        const next = section && section.querySelector('.carousel-next');
+        if (!track) return;
+
+        function step() {
+          const slide = track.querySelector('.carousel-slide');
+          const gap = parseFloat(getComputedStyle(track).columnGap || '24') || 24;
+          return slide ? slide.getBoundingClientRect().width + gap : track.clientWidth * 0.8;
+        }
+        if (prev) prev.addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
+        if (next) next.addEventListener('click', () => track.scrollBy({ left: step(), behavior: 'smooth' }));
+      });
+    })();
+  </script>
+)}
