@@ -19,6 +19,7 @@ const submissions = defineCollection({
     title: z.string(),
     author: z.string(),
     authorTitle: z.string().optional(),
+    authorUrl: z.string().optional(),
     location: z.string().optional(),
     pubDate: z.coerce.date(),
     featured: z.boolean().default(true),

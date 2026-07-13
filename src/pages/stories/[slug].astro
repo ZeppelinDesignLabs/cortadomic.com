@@ -80,7 +80,15 @@ const jsonLd = [articleLd, breadcrumbLd, ...(videoLd ? [videoLd] : [])];
       <p class="text-brand-orange font-bold text-sm uppercase tracking-widest mb-3">Caught on Cortado</p>
       <h1 class="text-4xl font-bold text-brand-dark mb-4">{d.title}</h1>
       <p class="text-gray-700 font-semibold">{byline}</p>
-      {d.authorTitle && <p class="text-gray-500 text-sm">{d.authorTitle}</p>}
+      {d.authorTitle && (
+        <p class="text-gray-500 text-sm">
+          {d.authorUrl ? (
+            <a href={d.authorUrl} target="_blank" rel="noopener noreferrer" class="text-brand-orange hover:underline">{d.authorTitle}</a>
+          ) : (
+            d.authorTitle
+          )}
+        </p>
+      )}
     </header>
 
     {hasVideo ? (
