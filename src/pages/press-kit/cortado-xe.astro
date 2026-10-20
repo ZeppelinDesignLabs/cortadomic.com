@@ -1,0 +1,174 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import siteData from '../../content/site.json';
+
+const downloads = [
+  {
+    title: 'Download complete press kit',
+    description: 'Backgrounder, spec sheet, logo, and high-resolution photos in one ZIP.',
+    url: '/press-kit/cortado-xe/cortado-xe-press-kit.zip',
+    meta: 'ZIP · ~21 MB',
+    primary: true,
+  },
+  {
+    title: 'Press backgrounder',
+    description: 'Product story, specs, Xe vs MkIII positioning, use cases, and suggested review angles.',
+    url: '/press-kit/cortado-xe/cortado-xe-press-backgrounder.pdf',
+    meta: 'PDF · 5 pages',
+  },
+  {
+    title: 'Spec sheet',
+    description: 'Public product brochure with specifications and overview.',
+    url: '/press-kit/cortado-xe/cortado-xe-spec-sheet.pdf',
+    meta: 'PDF',
+  },
+  {
+    title: 'High-resolution photo pack',
+    description: 'Editorial-ready product, guitar, packaging, and pouch images. Credit: Zeppelin Design Labs.',
+    url: '/press-kit/cortado-xe/cortado-xe-press-photos.zip',
+    meta: 'ZIP · ~21 MB',
+  },
+  {
+    title: 'Zeppelin Design Labs logo',
+    description: 'PNG logo for publication use.',
+    url: '/press-kit/cortado-xe/zeppelin-design-labs-logo.png',
+    meta: 'PNG',
+  },
+];
+
+const pageLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'Cortado Xe Press Kit',
+  description:
+    'Downloadable press materials for the Cortado Xe contact microphone: backgrounder, spec sheet, logo, and high-resolution photos.',
+  url: `${siteData.siteUrl}/press-kit/cortado-xe/`,
+  isPartOf: { '@id': `${siteData.siteUrl}/#website` },
+  about: {
+    '@type': 'Product',
+    name: 'Cortado Xe',
+    url: `${siteData.siteUrl}/products/cortado-xe/`,
+    brand: { '@type': 'Brand', name: siteData.companyName },
+  },
+};
+---
+
+<BaseLayout
+  title="Cortado Xe Press Kit"
+  description="Download the Cortado Xe press kit — backgrounder, spec sheet, logo, and high-resolution product photos for reviewers and journalists."
+  ogImage="/images/og/og-xe.jpg"
+  jsonLd={pageLd}
+>
+  <section class="relative text-white overflow-hidden">
+    <div class="absolute inset-0 bg-brand-dark"></div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
+      <p class="text-brand-orange font-bold text-sm uppercase tracking-widest mb-3">Press Kit</p>
+      <h1 class="text-4xl md:text-5xl font-bold mb-4 max-w-3xl">Cortado Xe</h1>
+      <p class="text-gray-200 text-lg max-w-2xl leading-relaxed mb-6">
+        Materials for reviewers and journalists covering the Cortado Xe — Zeppelin Design Labs&rsquo; most compact
+        pro contact microphone.
+      </p>
+      <p class="text-gray-300 text-sm max-w-2xl">
+        Product page:
+        <a href="/products/cortado-xe/" class="text-brand-orange font-semibold hover:underline">cortadomic.com/products/cortado-xe/</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+    <div class="grid lg:grid-cols-3 gap-10">
+      <div class="lg:col-span-2 space-y-4">
+        <h2 class="text-2xl font-bold text-brand-dark mb-2">Downloads</h2>
+        <p class="text-gray-600 mb-6">
+          Prefer one link in email? Use the complete kit. Individual files are below if you only need one asset.
+        </p>
+
+        <ul class="space-y-3">
+          {downloads.map((doc) => (
+            <li>
+              <a
+                href={doc.url}
+                class:list={[
+                  'flex items-start gap-4 p-4 rounded-lg border transition-all group',
+                  doc.primary
+                    ? 'bg-brand-dark border-brand-dark text-white hover:shadow-lg'
+                    : 'bg-white border-gray-200 hover:border-brand-orange hover:shadow-md',
+                ]}
+              >
+                <svg
+                  class:list={['w-9 h-9 flex-shrink-0 mt-0.5', doc.primary ? 'text-brand-orange' : 'text-brand-orange']}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  ></path>
+                </svg>
+                <div class="flex-1 min-w-0">
+                  <p
+                    class:list={[
+                      'font-bold transition-colors',
+                      doc.primary ? 'text-white' : 'text-brand-dark group-hover:text-brand-orange',
+                    ]}
+                  >
+                    {doc.title}
+                  </p>
+                  <p class:list={['text-sm mt-0.5', doc.primary ? 'text-gray-300' : 'text-gray-600']}>
+                    {doc.description}
+                  </p>
+                  <p
+                    class:list={[
+                      'text-xs mt-1 uppercase tracking-wider',
+                      doc.primary ? 'text-brand-orange' : 'text-gray-500',
+                    ]}
+                  >
+                    {doc.meta}
+                  </p>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <aside class="space-y-6">
+        <div class="bg-brand-light rounded-xl p-6 border border-gray-200">
+          <h2 class="text-lg font-bold text-brand-dark mb-3">What&rsquo;s included</h2>
+          <ul class="space-y-2 text-gray-700 text-sm leading-relaxed">
+            <li>Press backgrounder with review angles</li>
+            <li>Public spec sheet</li>
+            <li>High-resolution product photos</li>
+            <li>Company logo</li>
+          </ul>
+          <p class="text-gray-500 text-sm mt-4">
+            Dealer pricing and promotional materials are not included.
+          </p>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 border border-gray-200">
+          <h2 class="text-lg font-bold text-brand-dark mb-3">Photo credit</h2>
+          <p class="text-gray-600 text-sm leading-relaxed">
+            Free for editorial coverage of the Cortado Xe and Zeppelin Design Labs. Please credit
+            <strong>Zeppelin Design Labs / cortadomic.com</strong>.
+          </p>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 border border-gray-200">
+          <h2 class="text-lg font-bold text-brand-dark mb-3">Media contact</h2>
+          <p class="text-gray-700 text-sm leading-relaxed">
+            Patrick Jaromin<br />
+            Operations Manager<br />
+            <a href={`mailto:${siteData.contactEmail}`} class="text-brand-orange font-semibold hover:underline">
+              {siteData.contactEmail}
+            </a>
+          </p>
+        </div>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>

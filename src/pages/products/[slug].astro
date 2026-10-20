@@ -147,12 +147,14 @@ const breadcrumbLd = {
           <div>
             <h3 class="text-2xl font-bold text-brand-dark mb-5">Downloads</h3>
             <ul class="space-y-3">
-              {product.documents.map((doc: any) => (
+              {product.documents.map((doc: any) => {
+                const isPdf = String(doc.url || '').toLowerCase().endsWith('.pdf');
+                return (
                 <li>
                   <a
                     href={doc.url}
-                    target="_blank"
-                    rel="noopener"
+                    target={isPdf ? '_blank' : undefined}
+                    rel={isPdf ? 'noopener' : undefined}
                     class="flex items-start gap-4 p-4 bg-white rounded-lg border border-gray-200 hover:border-brand-orange hover:shadow-md transition-all group"
                   >
                     <svg class="w-9 h-9 text-brand-orange flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -161,11 +163,12 @@ const breadcrumbLd = {
                     <div class="flex-1 min-w-0">
                       <p class="font-bold text-brand-dark group-hover:text-brand-orange transition-colors">{doc.title}</p>
                       {doc.description && <p class="text-sm text-gray-600 mt-0.5">{doc.description}</p>}
-                      <p class="text-xs text-gray-500 mt-1 uppercase tracking-wider">PDF Download</p>
+                      <p class="text-xs text-gray-500 mt-1 uppercase tracking-wider">{isPdf ? 'PDF Download' : 'View'}</p>
                     </div>
                   </a>
                 </li>
-              ))}
+                );
+              })}
             </ul>
           </div>
         )}

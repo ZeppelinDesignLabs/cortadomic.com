@@ -119,6 +119,8 @@ Site-wide settings (company name, address, contact email, OG image) live in `src
 
 PDF documents go in `public/docs/`. They are referenced from product JSON via `documents[].url`.
 
+Press kit assets for reviewers go in `public/press-kit/cortado-xe/`. The landing page is `src/pages/press-kit/cortado-xe.astro` → `/press-kit/cortado-xe/`.
+
 ---
 
 ## Contact form (Web3Forms)
