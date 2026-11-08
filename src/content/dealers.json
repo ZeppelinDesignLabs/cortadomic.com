@@ -42,6 +42,12 @@
         { "name": "Altergear Guitar Boutique", "location": "Honjo, Japan", "url": "https://www.guitar-boutique-altergear.com" },
         { "name": "Music Metro", "location": "Seoul, South Korea", "url": "https://www.musicmetro.co.kr" }
       ]
+    },
+    {
+      "name": "OCEANIA",
+      "dealers": [
+        { "name": "Oceania Audio Sales Ltd", "location": "Auckland, New Zealand", "url": "https://oceaniaaudiosales.co.nz" }
+      ]
     }
   ]
 }
