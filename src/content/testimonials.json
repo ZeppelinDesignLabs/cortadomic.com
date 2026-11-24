@@ -1,0 +1,22 @@
+[
+  {
+    "id": "rick-allen-first-contact-mic",
+    "quote": "When any of my students ask what is the first contact mic I would recommend, I quickly answer Cortado!",
+    "name": "Rick Allen",
+    "credit": "Sound designer (HBO, Netflix, Disney) · Instructor, Conservatory of Recording Arts & Sciences",
+    "url": "https://www.rickallencreative.com/",
+    "products": ["cortado-mkiii"],
+    "storySlug": "rick-allen-pole-test",
+    "home": true
+  },
+  {
+    "id": "rick-allen-great-price",
+    "quote": "Great sound AND great price.",
+    "name": "Rick Allen",
+    "credit": "Sound designer (HBO, Netflix, Disney) · Instructor, Conservatory of Recording Arts & Sciences",
+    "url": "https://www.rickallencreative.com/",
+    "products": ["cortado-mkiii"],
+    "storySlug": "rick-allen-pole-test",
+    "home": false
+  }
+]

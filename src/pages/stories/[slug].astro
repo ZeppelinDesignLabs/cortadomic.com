@@ -156,6 +156,18 @@ const jsonLd = [articleLd, breadcrumbLd, ...(videoLd ? [videoLd] : [])];
   .prose :global(ul) {
     @apply list-disc pl-6 mb-4 text-gray-600 space-y-2;
   }
+  .prose :global(ol) {
+    @apply list-decimal pl-6 mb-4 text-gray-600 space-y-2;
+  }
+  .prose :global(blockquote) {
+    @apply border-l-4 border-brand-orange pl-5 my-6;
+  }
+  .prose :global(hr) {
+    @apply my-10 border-gray-200;
+  }
+  .prose :global(blockquote p) {
+    @apply text-xl text-brand-dark font-semibold;
+  }
   .prose :global(strong) {
     @apply text-brand-dark;
   }

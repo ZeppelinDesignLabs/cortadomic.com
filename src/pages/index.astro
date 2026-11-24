@@ -2,6 +2,8 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProductCard from '../components/ProductCard.astro';
 import Picture from '../components/Picture.astro';
+import Testimonial from '../components/Testimonial.astro';
+import testimonials from '../content/testimonials.json';
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -10,6 +12,8 @@ const productFiles = fs.readdirSync(productsDir).filter((f: string) => f.endsWit
 const products = productFiles
   .map((f: string) => JSON.parse(fs.readFileSync(path.join(productsDir, f), 'utf-8')))
   .sort((a: any, b: any) => a.order - b.order);
+
+const homeTestimonial = testimonials.find((t) => t.home);
 
 const heroSlides = [
   { image: '/images/products/mkiii-hero-inhand.jpg', caption: 'Cortado MkIII — The original. Robust and versatile.', position: 'center' },
@@ -88,6 +92,12 @@ const heroSlides = [
       {products.map((p: any) => <ProductCard product={p} />)}
     </div>
   </section>
+
+  {homeTestimonial && (
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+      <Testimonial {...homeTestimonial} />
+    </section>
+  )}
 
   <!-- Video Showcase -->
   <section class="bg-brand-dark text-white py-20">
